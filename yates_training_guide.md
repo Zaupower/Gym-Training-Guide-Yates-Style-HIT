@@ -106,6 +106,34 @@ The isolation pre-fatigues the target muscle, so on the compound lift it fails *
 
 ---
 
+## How Hard Should Each Set Be? (Intensity Reference)
+
+Intensity in this system is measured by **proximity to failure**, not by weight or rep count. A given set is either prep, all-out, or maintenance — there's no middle ground.
+
+### Weight training
+
+| Set type | Effort | To failure? | Purpose |
+|---|---|---|---|
+| Warm-up sets (1–2 per exercise) | ~50–70% | **No** | Get blood in, groove the movement, get to the working weight safely |
+| Working set | **100%** | **Yes — true failure** | Stimulate growth. The point where, with good form, you cannot do another rep |
+| Optional drop set | 100% on a ~10% lighter weight | Yes | "Hit the nail in twice" if you're unsure you nailed the first set |
+| **Beginner phase (first ~2 weeks)** | Light | **No** | Learn the movement and the mind-muscle connection. Failure comes later. |
+| **Deload weeks (every 5–6 weeks)** | Light, well short of failure | **No** | Maintain blood flow and the habit. Let the body fully recover. |
+
+**Rep range:** Yates doesn't prescribe one. Pick a weight that makes you reach true failure with strict form. Whether that's 6 reps or 12, what matters is the failure point, not the count.
+
+### Cardio (air bike sprints)
+
+| Phase | Effort | Notes |
+|---|---|---|
+| Warm-up (1–1.5 min) | Easy | Just get warm |
+| Sprint (20 sec × 3) | **100% all-out** | Track watts. Each session must match or beat the previous output. |
+| Recovery between sprints (1 min) | Slow, easy spin | Let breathing come back |
+
+If you can do a 4th sprint at full output, you didn't go hard enough on the first three.
+
+---
+
 ## Progression
 
 Add something each session: half a pound, one more rep, anything. The body needs a reason to change.
@@ -138,9 +166,22 @@ This is *why* low-volume lifting works for the average person. The calorie-burni
 3. 1 minute slow recovery.
 4. Repeat for **3 sprints total**.
 
-Three sprints is the ceiling — after the third, you can't breathe. Studies comparing this to 45 min of steady-state cardio show roughly equivalent results.
+Three sprints is the ceiling — after the third, you can't breathe.
 
-Add longer/easier cardio (hiking, biking) only if you enjoy it.
+### Why 6 minutes works as well as 45
+
+Yates references research (popularised in a book he recalls as *"The One Minute Cardio"*) comparing:
+
+- **6 minutes of HIIT** (1 minute of actual all-out sprinting, spread across the session) vs.
+- **45 minutes of steady-state cardio** on a treadmill.
+
+Result: **roughly the same cardiovascular and metabolic benefit.**
+
+So the practical choice is: 6 minutes, or 45 minutes, for the same outcome? For anyone with a job, family, or life, the answer is obvious. The "I don't have time" excuse stops here.
+
+> "I'd rather do the six minutes." — Yates
+
+Add longer/easier cardio (hiking, biking) only if you enjoy it as recreation, not because you think you need it.
 
 ---
 
