@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: trainlog-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: trainlog
+      POSTGRES_PASSWORD: trainlog
+      POSTGRES_DB: trainlog
+    ports:
+      - "5432:5432"
+    volumes:
+      - trainlog_pgdata:/var/lib/postgresql/data
+
+volumes:
+  trainlog_pgdata:

@@ -1,0 +1,168 @@
+// Prisma schema — TrainLog (Yates-style training log)
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Unit {
+  kg
+  lb
+}
+
+enum OverallFeel {
+  strong
+  flat
+  distracted
+}
+
+enum MuscleGroup {
+  chest
+  back
+  legs
+  shoulders
+  biceps
+  triceps
+  calves
+  abs
+  other
+}
+
+enum SetKind {
+  warmup
+  working
+  drop
+}
+
+enum TargetMetric {
+  weight
+  reps
+  frequency
+  other
+}
+
+model User {
+  id           String             @id @default(cuid())
+  email        String             @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime           @default(now())
+
+  sessions     Session[]
+  reviews      MonthlyReview[]
+  experiments  ExperimentMarker[]
+  library      ExerciseLibrary[]
+  settings     Settings?
+}
+
+// One row per user
+model Settings {
+  userId           String  @id
+  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  unit             Unit    @default(kg)
+  deloadAfterWeeks Int     @default(6)
+  weeklyTarget     Int     @default(3)
+}
+
+model ExerciseLibrary {
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  muscleGroup MuscleGroup
+  createdAt   DateTime    @default(now())
+
+  @@id([userId, name])
+  @@index([userId])
+}
+
+model Session {
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime     @db.Date
+  energy      Int?
+  sleep       Int?
+  stress      Int?
+  overallFeel OverallFeel?
+  dietNotes   String       @default("")
+  dietTags    String[]     @default([])
+  notes       String       @default("")
+  isDraft     Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  exercises   Exercise[]
+
+  @@unique([userId, date])
+  @@index([userId, date])
+}
+
+model Exercise {
+  id             String        @id @default(cuid())
+  sessionId      String
+  session        Session       @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  name           String
+  muscleGroup    MuscleGroup
+  preExhaustWith String?
+  notes          String        @default("")
+  order          Int           @default(0)
+  sets           ExerciseSet[]
+
+  @@index([sessionId])
+  @@index([name])
+}
+
+model ExerciseSet {
+  id         String   @id @default(cuid())
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  kind       SetKind
+  weight     Float
+  unit       Unit     @default(kg)
+  reps       Int
+  toFailure  Boolean  @default(false)
+  order      Int      @default(0)
+
+  @@index([exerciseId])
+}
+
+model MonthlyReview {
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  month        String   // "YYYY-MM"
+  observations String   @default("")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  targets      Target[]
+
+  @@id([userId, month])
+  @@index([userId])
+}
+
+model Target {
+  id           String        @id @default(cuid())
+  reviewUserId String
+  reviewMonth  String
+  review       MonthlyReview @relation(fields: [reviewUserId, reviewMonth], references: [userId, month], onDelete: Cascade)
+  description  String
+  exerciseName String?
+  targetMetric TargetMetric  @default(other)
+  targetValue  String        @default("")
+  achieved     Boolean       @default(false)
+
+  @@index([reviewUserId, reviewMonth])
+}
+
+model ExperimentMarker {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime @db.Date
+  whatChanged String
+  notes       String   @default("")
+  createdAt   DateTime @default(now())
+
+  @@index([userId, date])
+}

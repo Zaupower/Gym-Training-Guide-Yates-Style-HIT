@@ -1,0 +1,16 @@
+node_modules
+.next
+.git
+.github
+.husky
+tests
+coverage
+*.log
+.env
+.env.local
+.DS_Store
+.vscode
+README.md
+README_yates_guide.md
+yates_training_guide.md
+Training log app spec
