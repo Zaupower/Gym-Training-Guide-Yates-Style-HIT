@@ -51,7 +51,7 @@ export async function setSessionCookie(token: string): Promise<void> {
   jar.set(COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.COOKIE_SECURE !== "false" && process.env.NODE_ENV === "production",
     path: "/",
     maxAge: TOKEN_TTL_SECONDS,
   });
