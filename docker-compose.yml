@@ -11,6 +11,39 @@ services:
       - "5432:5432"
     volumes:
       - trainlog_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trainlog -d trainlog"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    build: .
+    # image: registry.gitlab.com/<namespace>/trainlog:latest
+    container_name: trainlog-migrate
+    command: node node_modules/prisma/build/index.js migrate deploy
+    environment:
+      DATABASE_URL: postgresql://trainlog:trainlog@postgres:5432/trainlog?schema=public
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  app:
+    build: .
+    # image: registry.gitlab.com/<namespace>/trainlog:latest
+    container_name: trainlog-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://trainlog:trainlog@postgres:5432/trainlog?schema=public
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
 
 volumes:
   trainlog_pgdata:
