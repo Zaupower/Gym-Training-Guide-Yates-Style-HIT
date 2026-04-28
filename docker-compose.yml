@@ -7,8 +7,6 @@ services:
       POSTGRES_USER: trainlog
       POSTGRES_PASSWORD: trainlog
       POSTGRES_DB: trainlog
-    ports:
-      - "5432:5432"
     volumes:
       - trainlog_pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -33,7 +31,7 @@ services:
     container_name: trainlog-app
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3002:3000"
     environment:
       DATABASE_URL: postgresql://trainlog:trainlog@postgres:5432/trainlog?schema=public
       NODE_ENV: production
