@@ -24,7 +24,8 @@
     "next": "^15.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^2.13.3"
+    "recharts": "^2.13.3",
+    "resend": "^6.12.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

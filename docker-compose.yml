@@ -19,6 +19,9 @@ services:
       DATABASE_URL: postgresql://postgress:p0stgre55@192.168.0.112:5432/trainlog?schema=public
       NODE_ENV: production
       AUTH_SECRET: 9f2715e59909069b30da8df1d684df77c26b1c3521fbe0765ed764b8bc988656
+      RESEND_API_KEY: re_your_api_key_here
+      EMAIL_FROM: TrainLog <you@yourdomain.com>
+      APP_URL: http://192.168.0.112:3002
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:

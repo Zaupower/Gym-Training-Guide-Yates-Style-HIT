@@ -120,10 +120,19 @@ export default function AuthForm({
           </button>
         </form>
 
-        <div className="mt-4 text-center text-sm">
-          <Link href={altHref} className="text-ink/70 underline">
-            {altLabel}
-          </Link>
+        <div className="mt-4 space-y-2 text-center text-sm">
+          <div>
+            <Link href={altHref} className="text-ink/70 underline">
+              {altLabel}
+            </Link>
+          </div>
+          {!isRegister && (
+            <div>
+              <Link href="/forgot-password" className="text-ink/50 underline">
+                Forgot your password?
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

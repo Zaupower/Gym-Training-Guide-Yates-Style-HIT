@@ -45,17 +45,30 @@ enum TargetMetric {
 }
 
 model User {
-  id           String             @id @default(cuid())
-  email        String             @unique
+  id           String               @id @default(cuid())
+  email        String               @unique
   name         String
   passwordHash String
-  createdAt    DateTime           @default(now())
+  createdAt    DateTime             @default(now())
 
   sessions     Session[]
   reviews      MonthlyReview[]
   experiments  ExperimentMarker[]
   library      ExerciseLibrary[]
   settings     Settings?
+  resetTokens  PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  token     String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
 }
 
 // One row per user
