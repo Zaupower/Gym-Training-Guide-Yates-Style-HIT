@@ -230,10 +230,45 @@ Yates wrote down **every workout from 1983 to 1997**. Sets, reps, weights, how h
 
 Why it matters:
 - You see what's actually working vs. what you *think* is working.
-- You spot plateaus early.
+- You spot plateaus early — within weeks, not months.
+- **You can run experiments on yourself.** Change one variable (frequency, exercise, rep range), watch the log for a response, revert if it stalls. Yates went from 3 to 4 sessions a week, saw progress stop in the notebook, cut back. Without the log, that experiment is just guessing.
+- **Memory aid — you will forget.** Even Yates, decades later, has to pull the notebooks out to answer questions about his own training, and sometimes finds it wasn't quite what he remembered.
+- **Catch overtraining early.** Three "felt tired / flat / off" sessions in a row is a signal to drop intensity, not grind through.
 - You progress deliberately instead of "shooting in the dark."
 
 Do a monthly review. Set realistic targets for the next month.
+
+---
+
+## Your Training Notebook (Daily Log)
+
+Buy a physical notebook. Take it to every session. Fill it in **as you go**, not from memory afterwards.
+
+### What to log for each exercise
+
+- Exercise name
+- Warm-up sets: **weight × reps**
+- Working set: **weight × reps** (to failure)
+- Drop set or pre-exhaust pairing, if used
+- Quick note: form issue, weak side, pain, whether the mind-muscle connection was there
+
+### What to log for the session
+
+- Date
+- How you felt going in (energy, sleep, stress)
+- How the session went overall (strong / flat / distracted)
+- Anything off (an injury flaring up, slept badly, missed a meal)
+- **What you ate that day** — especially if you're cutting, bulking, or testing a dietary change. Yates logged training and diet together; the patterns only show up when you have both.
+
+### What to log monthly
+
+- Read back through the last 4 weeks
+- Note what's progressing, what's plateaued
+- Set **1–3 realistic targets** for next month (e.g. add 2.5 kg to working set on bench, hit one more rep on leg press)
+
+The notebook is what turns "going to the gym" into **training** — every session has a purpose, every plateau gets caught early, and a year from now you'll know exactly what worked.
+
+App or spreadsheet works too. But Yates used a physical book for 14 years for a reason: nothing to charge, nothing to crash, nothing to scroll. Just open it, write it, close it.
 
 ---
 
