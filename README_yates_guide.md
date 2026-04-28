@@ -1,5 +1,3 @@
-# Gym-Training-Guide-Yates-Style-HIT
-Condensed from the Huberman Lab conversation with Dorian Yates
 # Gym Training Guide — Yates-Style HIT
 
 *Condensed from the Huberman Lab conversation with Dorian Yates (6× Mr. Olympia).*
