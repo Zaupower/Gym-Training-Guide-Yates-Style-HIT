@@ -1,29 +1,12 @@
 services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: trainlog-pg
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: trainlog
-      POSTGRES_PASSWORD: trainlog
-      POSTGRES_DB: trainlog
-    volumes:
-      - trainlog_pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U trainlog -d trainlog"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   migrate:
     image: ghcr.io/zaupower/gym-training-guide-yates-style-hit:latest
     container_name: trainlog-migrate
     command: node node_modules/prisma/build/index.js migrate deploy
     environment:
-      DATABASE_URL: postgresql://trainlog:trainlog@postgres:5432/trainlog?schema=public
-    depends_on:
-      postgres:
-        condition: service_healthy
+      DATABASE_URL: postgresql://postgress:p0stgre55@192.168.0.112:5432/trainlog?schema=public
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: "no"
 
   app:
@@ -33,13 +16,10 @@ services:
     ports:
       - "3002:3000"
     environment:
-      DATABASE_URL: postgresql://trainlog:trainlog@postgres:5432/trainlog?schema=public
+      DATABASE_URL: postgresql://postgress:p0stgre55@192.168.0.112:5432/trainlog?schema=public
       NODE_ENV: production
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
-      postgres:
-        condition: service_healthy
       migrate:
         condition: service_completed_successfully
-
-volumes:
-  trainlog_pgdata:
