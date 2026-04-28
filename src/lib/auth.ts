@@ -47,11 +47,13 @@ export async function readSessionToken(token: string): Promise<SessionPayload | 
 }
 
 export async function setSessionCookie(token: string): Promise<void> {
+  const secure = process.env.COOKIE_SECURE !== "false" && process.env.NODE_ENV === "production";
+  console.log("[auth] setSessionCookie secure:", secure);
   const jar = await cookies();
   jar.set(COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.COOKIE_SECURE !== "false" && process.env.NODE_ENV === "production",
+    secure,
     path: "/",
     maxAge: TOKEN_TTL_SECONDS,
   });
