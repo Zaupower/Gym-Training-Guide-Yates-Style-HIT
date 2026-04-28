@@ -18,6 +18,7 @@ services:
     environment:
       DATABASE_URL: postgresql://postgress:p0stgre55@192.168.0.112:5432/trainlog?schema=public
       NODE_ENV: production
+      AUTH_SECRET: 9f2715e59909069b30da8df1d684df77c26b1c3521fbe0765ed764b8bc988656
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
