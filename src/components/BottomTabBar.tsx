@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, History, LineChart, ClipboardList } from "lucide-react";
+import { CalendarDays, History, LineChart, ClipboardList, Upload } from "lucide-react";
 
 const tabs = [
   { href: "/", label: "Calendar", icon: CalendarDays },
   { href: "/history", label: "History", icon: History },
   { href: "/progress", label: "Progress", icon: LineChart },
   { href: "/review", label: "Review", icon: ClipboardList },
+  { href: "/import", label: "Import", icon: Upload },
 ];
 
 const HIDDEN_ON = ["/login", "/register"];
