@@ -1,0 +1,243 @@
+# Build Spec — Yates-Style Training Log (React App)
+
+**Audience:** an AI agent (or developer) tasked with building this app.
+**Output:** a single React artifact, mobile-first, single-user, no auth.
+**Source of truth for behaviour:** the companion file `yates_training_guide.md`. Read it first. The app's job is to make that guide *actionable in the gym*.
+
+---
+
+## 1. What this app is
+
+A personal training log inspired by Dorian Yates' physical notebooks (1983–1997). Yates kept every session, every set, every rep, plus how he felt and what he ate, and used the log to:
+
+- Spot plateaus within weeks
+- Run controlled experiments on himself (change one variable, watch for response)
+- Catch overtraining before it derailed progress
+- Settle questions about his own history decades later
+- Avoid "shooting in the dark"
+
+The app must support all of that. It is **not** a social fitness app, a workout generator, or a coaching platform.
+
+---
+
+## 2. Required features (mapped to actions)
+
+Each feature below is non-negotiable. They map 1:1 to actions a training log must support.
+
+| # | Action | Feature |
+|---|---|---|
+| 1 | Document workouts | Log session: date, exercises, warm-ups, working set to failure, optional drop sets, pre-exhaust pairings, per-exercise notes |
+| 2 | Spot plateaus | Per-exercise progression chart (weight × reps over time); visual flag when working set hasn't progressed in N sessions |
+| 3 | Monthly review + goals | Monthly view summarising last 4 weeks; set 1–3 targets for next month; track them |
+| 4 | Run n=1 experiments | "Experiment marker" — log a date when something changes (e.g. "started 4×/week"). Show before/after progression on charts. |
+| 5 | Memory aid / search history | Search exercises by name, filter by date range, view any historical session in full |
+| 6 | Catch overtraining | Log subjective state per session (energy / sleep / stress 1–5; overall feel: strong / flat / distracted). Surface a warning if 3 consecutive sessions are flat or worse. |
+| 7 | Log diet alongside training | Per-session diet notes field. Optional quick tags (low-carb, high-protein, IF window). |
+| 8 | Avoid "shooting in the dark" | Dashboard with weekly adherence (sessions/week), volume per muscle group, working-set progression at a glance |
+
+### Yates-specific behaviours to embed
+
+- **Deload reminder:** after 5–6 consecutive "hard" weeks of training, surface a soft prompt: *"You've trained hard for 6 weeks. Consider 2 weeks submaximal."*
+- **Once-per-week-per-muscle warning:** if a muscle group is logged twice within 7 days (excluding calves), show a gentle warning.
+- **Failure tracking:** every working set must be marked `to_failure: true/false`. The whole system rests on this.
+- **Warm-up vs working set distinction:** UI must make this distinction obvious — they are different things and analytics depend on the difference.
+
+---
+
+## 3. Data model
+
+Use `window.storage` (artifact storage API). Keys are hierarchical strings.
+
+### Entities
+
+```
+Session
+  id: string (e.g. "session_<timestamp>")
+  date: ISO date string
+  energy: 1–5
+  sleep: 1–5
+  stress: 1–5
+  overall_feel: "strong" | "flat" | "distracted"
+  diet_notes: string
+  diet_tags: string[]  // optional, e.g. ["low-carb", "IF"]
+  notes: string
+  exercises: Exercise[]
+
+Exercise (within a Session)
+  id: string
+  name: string
+  muscle_group: "chest" | "back" | "legs" | "shoulders" | "biceps" | "triceps" | "calves" | "abs" | "other"
+  warmup_sets: Set[]
+  working_set: Set  // single working set, to failure
+  drop_set: Set | null
+  pre_exhaust_with: string | null  // name of paired isolation exercise, if any
+  notes: string
+
+Set
+  weight: number
+  unit: "kg" | "lb"
+  reps: number
+  to_failure: boolean
+
+MonthlyReview
+  month: "YYYY-MM"
+  observations: string
+  targets: Target[]
+
+Target
+  id: string
+  description: string
+  exercise_name: string | null
+  target_metric: "weight" | "reps" | "frequency" | "other"
+  target_value: string
+  achieved: boolean
+
+ExperimentMarker
+  id: string
+  date: ISO date string
+  what_changed: string  // e.g. "Started 4×/week", "Switched to low-carb diet"
+  notes: string
+```
+
+### Storage keys
+
+```
+sessions:<session_id>            → Session JSON
+sessions_index                   → { ids: string[], by_date: { "YYYY-MM-DD": session_id } }
+reviews:<YYYY-MM>                → MonthlyReview JSON
+experiments:<id>                 → ExperimentMarker JSON
+experiments_index                → string[] of ids
+exercise_library                 → string[] of exercise names the user has used (for autocomplete)
+settings                         → { unit: "kg"|"lb", deload_after_weeks: 6, ... }
+```
+
+Combine related data into single keys where possible (per the storage API guidance — fewer round trips).
+
+---
+
+## 4. Screens
+
+Mobile-first. Five main screens, accessed via bottom tab bar.
+
+### 4.1 Dashboard (home)
+
+- "Log today's session" CTA (big, primary)
+- This week: sessions logged / target (e.g. 2/3)
+- Last session: date, summary
+- Active deload reminder (if triggered)
+- Volume per muscle group this week (small bar chart)
+- Active monthly targets with progress
+
+### 4.2 Log Session
+
+Fast entry. Minimum taps. Designed to be filled *during* the workout, not after.
+
+Flow:
+1. Date (defaults to today)
+2. Pre-session: energy / sleep / stress sliders (1–5)
+3. Add exercise → autocomplete from `exercise_library` or type new → muscle group
+4. For each exercise:
+   - Add warm-up sets (weight + reps, repeatable)
+   - Working set (weight + reps + `to_failure` checkbox, default true)
+   - Optional: drop set, pre-exhaust pairing, notes
+5. Post-session: overall feel, diet notes/tags, session notes
+6. Save
+
+Constraint: must handle being closed and re-opened mid-session without losing data. Auto-save to a draft key on every change.
+
+### 4.3 History
+
+- List of sessions, reverse chronological
+- Filters: date range, exercise name, muscle group
+- Tap a session → full read-only detail view
+- Search bar (exercise name)
+
+### 4.4 Progress
+
+- Pick an exercise → chart of working set weight × reps over time
+- Toggle to show: weight only, reps only, estimated 1RM (optional)
+- Overlay: experiment markers (vertical lines on chart with labels)
+- Plateau flag: if working set hasn't progressed in last N sessions of that exercise, show a "plateau" badge
+- Adherence chart: sessions per week over last 12 weeks
+- Volume per muscle group over time
+
+### 4.5 Review
+
+- Current month: editable observations, targets list with toggle to mark achieved
+- Past months: read-only list of completed reviews
+- "Generate review draft" button: pre-fills observations field with auto-summary (sessions logged, exercises progressed, exercises plateaued, average overall feel)
+- Experiments tab within Review: list of ExperimentMarkers; tap one to see progression deltas before/after on relevant exercises
+
+---
+
+## 5. Technical stack
+
+- **Framework:** React (single-file `.jsx` artifact)
+- **Storage:** `window.storage` (artifact persistent storage). **Do NOT use `localStorage` or `sessionStorage`** — they are not supported in this environment and will break the artifact.
+- **Charts:** `recharts` (already available)
+- **Icons:** `lucide-react` (already available)
+- **Styling:** Tailwind core utility classes only (no custom CSS compilation)
+- **State:** React hooks (`useState`, `useReducer`, `useEffect`). No external state library needed.
+
+### Required first step
+
+Before writing code, **read** `/mnt/skills/public/frontend-design/SKILL.md`. It contains design tokens, component patterns, and styling constraints specific to this environment. The output should look like a real product, not an AI-generated mock.
+
+---
+
+## 6. Design principles (non-negotiable)
+
+1. **Mobile first.** Assume the user is in a gym, on a phone, with one hand and sweaty fingers. Tap targets must be large. Forms must minimise typing.
+2. **Speed of entry > visual richness.** Logging a working set should take ≤3 taps from the active session screen.
+3. **No friction on read.** Viewing past sessions and progress charts should be one tap from anywhere.
+4. **Quiet by default.** No celebrations, streaks, badges, gamification. The user is an adult tracking their own work. The app is a notebook, not a coach.
+5. **Honest data.** Never auto-fill, estimate, or interpolate missing values. Empty is empty.
+6. **Offline-capable.** All data lives in `window.storage`. No network calls required for core flows.
+7. **No flattery.** Don't tell the user "great job!" Don't add motivational quotes. Yates' system is built on honest self-assessment, not external validation.
+
+---
+
+## 7. Out of scope (do NOT build)
+
+- Multi-user, accounts, login, profiles
+- Social features (sharing, feeds, comments, leaderboards)
+- Workout generation / "today's workout" suggestions
+- Video / image / form-check uploads
+- Macro/calorie tracking (diet is logged as free-text notes + tags, that's it)
+- Wearable integration / heart-rate sync
+- Push notifications
+- Pre-built workout programs
+- Exercise demonstration videos or animated diagrams
+- AI coaching / chat / suggestions beyond the deload and overtraining warnings specified above
+
+If unsure whether a feature belongs, ask: *"Did Yates' physical notebook do this in 1985?"* If no, leave it out.
+
+---
+
+## 8. Acceptance checklist
+
+The build is complete when a user can:
+
+- [ ] Log a complete session (warm-ups + working set to failure + drop set + notes) in under 60 seconds
+- [ ] Re-open a draft session and continue where they left off
+- [ ] Search for "bench press" and see every time they've done it
+- [ ] Open the progression chart for any exercise and see weight × reps over time
+- [ ] Mark an experiment ("started 4×/week on March 1") and see it on relevant charts
+- [ ] Set a monthly target and mark it achieved
+- [ ] See a deload prompt after 6 weeks of consecutive hard training
+- [ ] See an overtraining warning after 3 flat sessions in a row
+- [ ] See a "trained X twice this week" warning if a non-calf muscle is logged twice within 7 days
+- [ ] Use the app entirely offline
+- [ ] Close the browser and reopen it and have all data still there
+
+---
+
+## 9. First-run state
+
+The app should boot with sensible defaults:
+
+- Settings: unit = `kg`, deload reminder after 6 weeks, weekly session target = 3
+- Empty exercise library (populated as the user types new exercises)
+- Friendly empty states on every screen explaining what will appear once data exists
+
+Don't pre-populate sample data, demo workouts, or onboarding tutorials. The user already read the training guide — they know what to do.
