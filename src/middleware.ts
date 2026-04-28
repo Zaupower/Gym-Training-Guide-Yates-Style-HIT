@@ -7,10 +7,14 @@ const ALG = "HS256";
 const PUBLIC_PATHS = [
   "/login",
   "/register",
+  "/forgot-password",
+  "/reset-password",
   "/api/auth/login",
   "/api/auth/register",
   "/api/auth/logout",
   "/api/auth/me",
+  "/api/auth/forgot-password",
+  "/api/auth/reset-password",
 ];
 
 function getSecret(): Uint8Array {
