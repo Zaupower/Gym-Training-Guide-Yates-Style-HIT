@@ -185,11 +185,40 @@ Add longer/easier cardio (hiking, biking) only if you enjoy it as recreation, no
 
 ---
 
+## Diet & Nutrition
+
+**The single lever: control blood sugar.** Most of what Yates says about nutrition reduces to this. Get blood sugar under control and most of the rest sorts itself out.
+
+### What Yates eats now (in his 60s)
+
+- **Intermittent fasting**, eating window roughly **12 pm to 10 pm**.
+- **Two meals a day**, plus maybe a protein shake.
+- **Higher protein, higher fat, lower carb.**
+- He stopped eating like an old-school bodybuilder (frequent meals, chicken-breast-and-rice on the clock) — it was just habit.
+
+### Key principles
+
+- **Fatty liver is caused by uncontrolled blood sugar, not dietary fat.** A doctor telling someone with a fatty liver to "stop eating fat" is, per Yates, the worst possible advice. Cut the carbs, not the fat.
+- **Animal-based foods have the nutrients in the form your body can use.** Yates' view: a plant-based diet often needs supplementation to plug the gaps it creates — it's simpler to just eat the food that already contains what you need.
+- **Don't trust default medical nutrition advice without checking it.** UK medical schools give doctors roughly **2–3 hours of total nutrition education**. That's not enough to form an opinion worth following blindly.
+
+### The diabetic client (proof this works)
+
+Same case mentioned earlier under training. The diet half:
+- **Low-carb for one month** alongside the 3×/week training and 6-min cardio.
+- Result: out of pre-diabetic range, fatty liver normalised, 5–6 kg fat lost.
+- No medication. The food was the medicine.
+
+### On bodyweight as you age
+
+Even muscle has a cost. Yates intentionally dropped from **250 lbs to 230 lbs** in his 60s because his blood pressure was creeping up. His view: carrying excess weight, *even muscle*, isn't ideal for longevity. Worth keeping the ego in check at some point — the goal stops being "more" and becomes "the right amount, healthy."
+
+---
+
 ## Recovery & Lifestyle Essentials
 
 - **Sleep** — non-negotiable.
 - **Sun** — get outside daily. Long-wavelength light supports mitochondria, dopamine, blood-glucose regulation. Don't burn; do expose.
-- **Nutrition** — control blood sugar (lower carbs/sugar), prioritise protein and fat, eat real food. The "fatty liver = stop eating fat" advice is wrong; uncontrolled blood sugar is the driver.
 - **Breathe through the nose** outside of max-effort sets.
 - **Don't smoke, don't get drunk regularly.**
 
