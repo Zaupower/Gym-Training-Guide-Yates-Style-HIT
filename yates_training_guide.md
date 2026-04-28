@@ -30,7 +30,23 @@ For most people who aren't on steroids:
 
 - **2–3 sessions per week**, 45 minutes each. That's it.
 - **Each body part once per week** (direct work). Chest+back hits arms indirectly anyway.
+- **Exception: calves can go twice per week.** They recover faster than larger muscle groups. Yates flags them as the one body part where 2× is fine.
 - **Total:** 8–10 exercises covering the whole body is plenty.
+
+**Per-muscle breakdown** (Yates' actual numbers for the average person):
+
+| Muscle group | Exercises |
+|---|---|
+| Chest | 1 |
+| Back | 1–2 |
+| Legs | 1–2 |
+| Shoulders | 1 |
+| Biceps | optional (pulling already trains them) |
+| Triceps | optional (pressing already trains them) |
+| Calves | 1 (can go 2× per week) |
+| Abs | 1 if you want |
+
+If you're not a competitive bodybuilder, you don't need three angles of every muscle. One good exercise, taken to failure, is enough.
 
 A typical 3-day split:
 - **Day 1:** Chest + Back
@@ -41,17 +57,52 @@ Or whole-body 2× per week for the busy/average person.
 
 Yates tested training 4×/week and **progress stopped**. He cut back, growth resumed. He never had to learn that lesson twice.
 
+**3×/week is the sweet spot for most people.** It gives you enough frequency to drive change without compromising recovery, and it leaves four full days for the rest of your life.
+
+### Real-world proof
+
+Yates trained an overweight, pre-diabetic client with a fatty liver (liver enzymes 3× the normal range). The protocol:
+- **3 sessions per week, 45 min each** — whole body split across the three days, each muscle hit once.
+- **6-minute sprint cardio** on top.
+- **Low-carb diet** for the duration.
+
+After **one month**: out of the pre-diabetic range, liver enzymes back to normal, 5–6 kg of fat lost. No medication, no extreme volume. The frequency in this guide isn't theoretical — it's been tested on real, unhealthy, time-poor people and worked fast.
+
 ---
 
-## The Working Set
+## If You're a Raw Beginner — Start Here
+
+**Do not chase failure yet.** First few weeks are about learning the machine you're operating: your body.
+
+What to actually do:
+
+1. **Learn what each muscle does.** Pecs bring your arms down and across. Lats bring your upper arm down and back. If you don't know the function, you can't target it. Yates points out that even some IFBB pros don't know this.
+2. **Light sets, perfect form.** Use a weight that lets you focus entirely on technique. No grinding, no cheating.
+3. **Feel the contraction.** Squeeze the working muscle at the top of each rep. Confirm to yourself: *yes, I feel this in the right place.* This is the mind-muscle connection — you'll need it later when the weight gets heavy and your brain wants to recruit other muscles to make the lift easier.
+4. **After ~2 weeks of this**, start pushing sets to failure. Not before.
+
+Skip this and you'll spend years swinging dumbbells with your traps and lower back doing the work, wondering why your arms and chest don't grow.
+
+---
+
+## The Working Set (Once You're Past the Beginner Phase)
 
 After 1–2 warm-up sets, do **one working set to true muscular failure** — the point where, with good form, you cannot do another rep.
 
 - If you didn't nail it, do another. No rigid law.
 - A second drop set (~10% lighter) to failure is optional — Yates called this "hitting the nail in twice."
-- Beginners: spend the first few weeks learning the movement and the mind-muscle connection **before** chasing failure.
 
 **Form > weight, always.** When a set gets hard, the brain tries to recruit other muscles to escape. Override that instinct. Stay strict.
+
+### Pre-exhaustion (useful trick)
+
+If you can't *feel* the target muscle on a compound lift — say, your chest doesn't fire on bench press, or your quads don't fire on leg press — pre-exhaust it.
+
+**How:** Do an isolation exercise to failure first, then go straight into the compound with no rest.
+
+**Example:** Leg extensions to failure → immediately into leg press.
+
+The isolation pre-fatigues the target muscle, so on the compound lift it fails *before* the supporting muscles do. Result: the right muscle gets worked, even when your mind-muscle connection on the compound is weak.
 
 ---
 
@@ -72,7 +123,16 @@ But progress isn't linear forever:
 
 ## Cardio (6 Minutes, Not 45)
 
-Air bike sprint protocol:
+**One tool, one job.** Old-school bodybuilders used high-volume weight training partly as a calorie burner — lots of sets, lots of reps, fat stays off. Yates' argument against this: it wrecks your recovery. You can't grow if you're constantly breaking down more than you can rebuild.
+
+The fix is to split the jobs:
+- **Weights** = build and maintain muscle. Brief, intense, low volume.
+- **Cardio** = burn the calories. Short and separate.
+
+This is *why* low-volume lifting works for the average person. The calorie-burning workload moves to a 6-minute sprint, not to extra sets in the gym.
+
+### Air bike sprint protocol
+
 1. 1–1.5 min easy warm-up.
 2. **20 seconds all-out**, like the devil's chasing you. Track watts so you have a target.
 3. 1 minute slow recovery.
@@ -139,11 +199,12 @@ Same rules. Same muscles, same place, same principles.
 
 ## TL;DR — The Whole Guide on a Postcard
 
-1. **2–3 sessions/week, 45 min each.** Each body part once.
-2. **1–2 warm-ups, 1 working set to real failure.** Strict form.
-3. **Track everything.** Add weight or reps each session.
-4. **Hard 5–6 weeks → easy 2 weeks.** Full week off twice a year.
-5. **6-minute sprint cardio**, 1–2× per week.
-6. **Sleep, sun, protein, low sugar.**
-7. **Recover before you train again.** Growth happens out of the gym.
-8. **Stay natural as long as possible.**
+1. **Beginners: 2 weeks of light, perfect-form sets first.** Learn the muscles, feel the contraction. Then go to failure.
+2. **2–3 sessions/week, 45 min each.** Each body part once.
+3. **1–2 warm-ups, 1 working set to real failure.** Strict form.
+4. **Track everything.** Add weight or reps each session.
+5. **Hard 5–6 weeks → 2 weeks submaximal (light, in-gym, no failure).** Full week off twice a year.
+6. **6-minute sprint cardio**, 1–2× per week.
+7. **Sleep, sun, protein, low sugar.**
+8. **Recover before you train again.** Growth happens out of the gym.
+9. **Stay natural as long as possible.**
