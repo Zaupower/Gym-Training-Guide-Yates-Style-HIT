@@ -64,7 +64,9 @@ export default function PlansManager() {
         body: JSON.stringify({ name, content }),
       });
       if (!res.ok) { setMessage("Failed to save plan."); return; }
+      const data = await res.json();
       setName(""); setContent(""); setShowAdd(false);
+      if (data.count > 1) setMessage(`✓ ${data.count} plans imported.`);
       await load();
     } finally {
       setSaving(false);

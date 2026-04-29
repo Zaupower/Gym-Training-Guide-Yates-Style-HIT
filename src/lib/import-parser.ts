@@ -112,6 +112,46 @@ function parseStartDate(value: string, lineNum: number, errors: ParseError[]): D
   return d;
 }
 
+export interface SplitPlan {
+  name: string;
+  content: string;
+}
+
+export function splitPlanContent(text: string): SplitPlan[] {
+  const lines = text.split(/\r?\n/);
+
+  const weeksIndices: number[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].replace(/#.*$/, "").trim().toUpperCase().startsWith("WEEKS:")) {
+      weeksIndices.push(i);
+    }
+  }
+
+  if (weeksIndices.length <= 1) return [];
+
+  const plans: SplitPlan[] = [];
+  for (let p = 0; p < weeksIndices.length; p++) {
+    const blockStart = weeksIndices[p];
+    const blockEnd = p + 1 < weeksIndices.length ? weeksIndices[p + 1] : lines.length;
+
+    let name = `Plan ${p + 1}`;
+    for (let i = blockStart - 1; i >= 0; i--) {
+      const raw = lines[i].trim();
+      if (raw === "") continue;
+      if (raw.startsWith("#")) {
+        const extracted = raw.replace(/^#+/, "").replace(/=+/g, "").trim();
+        if (extracted) name = extracted;
+      }
+      break;
+    }
+
+    const content = lines.slice(blockStart, blockEnd).join("\n").trim();
+    plans.push({ name, content });
+  }
+
+  return plans;
+}
+
 export function parseImport(text: string): ParseResult {
   const lines = text.split(/\r?\n/);
   const errors: ParseError[] = [];
