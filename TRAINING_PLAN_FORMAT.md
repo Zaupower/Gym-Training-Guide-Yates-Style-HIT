@@ -47,6 +47,8 @@ DAY: friday
 
 ```
 DAY: <weekday>
+TITLE: Session title (optional)
+NOTES: Session notes (optional)
   Exercise Name | muscle_group | sets
   Exercise Name | muscle_group | sets
 ```
@@ -54,6 +56,8 @@ DAY: <weekday>
 - `DAY:` is case-insensitive (`Monday`, `MONDAY`, `monday` all work)
 - Valid days: `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`
 - Days not listed = rest days (no session created)
+- `TITLE:` pre-fills the session title shown in the calendar and session editor
+- `NOTES:` pre-fills the session notes; repeat `NOTES:` on multiple lines to append
 - Indentation is optional but recommended for readability
 
 ---

@@ -17,6 +17,8 @@ export interface ParsedExercise {
 
 export interface ParsedSession {
   date: Date;
+  title: string;
+  notes: string;
   exercises: ParsedExercise[];
 }
 
@@ -173,6 +175,8 @@ export function parseImport(text: string): ParseResult {
   let weeks = 1;
   let startDate: Date | null = null;
   const dayBlocks = new Map<number, ParsedExercise[]>();
+  const dayTitles = new Map<number, string>();
+  const dayNotes = new Map<number, string>();
   let currentDay: number | null = null;
 
   for (let i = 0; i < lines.length; i++) {
@@ -211,6 +215,18 @@ export function parseImport(text: string): ParseResult {
       continue;
     }
 
+    if (upper.startsWith("TITLE:") && currentDay !== null) {
+      dayTitles.set(currentDay, line.slice(6).trim());
+      continue;
+    }
+
+    if (upper.startsWith("NOTES:") && currentDay !== null) {
+      const text = line.slice(6).trim();
+      const existing = dayNotes.get(currentDay);
+      dayNotes.set(currentDay, existing ? `${existing}\n${text}` : text);
+      continue;
+    }
+
     if (currentDay !== null) {
       const exercise = parseExerciseLine(line, lineNum, errors);
       if (exercise) dayBlocks.get(currentDay)!.push(exercise);
@@ -233,7 +249,12 @@ export function parseImport(text: string): ParseResult {
     for (let w = 0; w < weeks; w++) {
       const date = new Date(first);
       date.setUTCDate(date.getUTCDate() + w * 7);
-      sessions.push({ date, exercises });
+      sessions.push({
+        date,
+        title: dayTitles.get(dayOfWeek) ?? "",
+        notes: dayNotes.get(dayOfWeek) ?? "",
+        exercises,
+      });
     }
   }
 

@@ -34,6 +34,8 @@ export async function POST(req: NextRequest) {
       data: {
         userId: user.id,
         date: session.date,
+        title: session.title,
+        notes: session.notes,
         exercises: {
           create: session.exercises.map((ex, exOrder) => ({
             name: ex.name,

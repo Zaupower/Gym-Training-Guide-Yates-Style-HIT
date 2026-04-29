@@ -37,6 +37,8 @@ export async function POST(
         userId: user.id,
         planId: id,
         date: session.date,
+        title: session.title,
+        notes: session.notes,
         isDraft: true,
         exercises: {
           create: session.exercises.map((ex, exOrder) => ({

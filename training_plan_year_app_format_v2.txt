@@ -1,19 +1,24 @@
 # =============================================================
-# 12-MONTH YATES HIT PLAN — APP IMPORT FORMAT (v2 with cardio)
+# 12-MONTH YATES HIT PLAN — APP IMPORT FORMAT (v3)
 # =============================================================
 #
-# Changes from v1:
-#   - Added Tuesday + Saturday cardio (air bike sprints)
-#   - Cardio dose follows the guide: 2x/week in push cycles,
-#     1x/week in deloads, lighter in foundation, 0 in week-off
-#   - Added calves to Friday (the guide says calves can go 2x/week)
-#   - Otherwise identical structure: 6w push -> 2w deload -> repeat
+# Changes from v2:
+#   - TITLE: added to each day block → pre-fills session title
+#   - NOTES: added to each day block → pre-fills session notes
+#   - Cardio exercise renamed to "AeroBike Sprints" (specific machine)
+#   - Warm-up vs sprint sets clearly labelled in comments
 #
 # CARDIO FORMAT:
-#   Air Bike Sprints | cardio | w:1x90sec, 3x20sec
-#     - w:1x90sec  = 1 warmup set, 90-second easy spin
-#     - 3x20sec    = 3 all-out 20-second sprints (1 min rest between, implicit)
-#   Total session ~6 minutes. Log watts in the session notes field.
+#   AeroBike Sprints | cardio | w:1x90sec, 3x20sec
+#     - w:1x90sec = 1 warmup set  — 90sec easy spin (shows as "Warm" in app)
+#     - 3x20sec   = 3 working sets — 20sec all-out sprint (shows as "Work" in app)
+#   Total ~6 min. Log peak watts in the session notes after training.
+#
+#   Other cardio machines use the same format — just change the name:
+#     Stationary Bike  | cardio | w:1x5min, 1x20min
+#     Treadmill Run    | cardio | w:1x5min, 1x25min
+#     Jump Rope        | cardio | w:1x90sec, 5x1min
+#     Rowing Machine   | cardio | w:1x3min, 3x4min
 #
 # UPLOAD ORDER — activate each plan when its date arrives:
 #   Plan 01  Foundation       4w   2026-05-04
@@ -33,7 +38,7 @@
 #
 # WEEKLY STRUCTURE:
 #   Mon  Chest + Back
-#   Tue  Cardio (push cycles only — drop in deload)
+#   Tue  Cardio (push cycles only — dropped in deload)
 #   Wed  Legs
 #   Thu  Rest
 #   Fri  Shoulders + Arms + Calves
@@ -49,12 +54,12 @@
 
 
 # ==== PLAN 01 — FOUNDATION (BEGINNERS ONLY) ====
-# Stop 2 reps short of failure. Focus on strict form and contraction.
-# Cardio: Saturday only, lighter (2 sprints instead of 3) to ease in.
 WEEKS: 4
 START: 2026-05-04
 
 DAY: monday
+TITLE: Chest & Back
+NOTES: Foundation phase. Stop 2 reps short of failure. Focus on strict form and full contraction.
   Incline Press         | chest     | w:1x12@20kg, 1x10@35kg
   Flat DB Press         | chest     | 1x10@30kg
   Pec Deck              | chest     | 1x12@20kg
@@ -63,6 +68,8 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@15kg
 
 DAY: wednesday
+TITLE: Legs
+NOTES: Foundation phase. Stop 2 reps short of failure. Feel the quad contraction on every rep.
   Leg Extension         | legs      | w:1x12@20kg, 1x12@35kg
   Leg Press             | legs      | w:1x10@60kg, 1x10@95kg
   Leg Curl              | legs      | 1x10@25kg
@@ -70,6 +77,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | 1x15@40kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves
+NOTES: Foundation phase. Stop 2 reps short of failure. Focus on mind-muscle connection.
   Overhead Press        | shoulders | w:1x10@15kg, 1x10@25kg
   Lateral Raise         | shoulders | 1x12@5kg
   Rear Delt Fly         | shoulders | 1x12@5kg
@@ -78,17 +87,19 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@30kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 2x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: Foundation dose: 90sec easy spin, then 2×20sec all-out sprints (lighter than push cycles). Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 2x20sec
 
 
 
 # ==== PLAN 02 — CYCLE 1 PUSH ====
-# Working set = true muscular failure. Add weight or reps each session.
-# Cardio: 2x/week (Tue + Sat), full 3-sprint protocol, all-out.
 WEEKS: 6
 START: 2026-06-01
 
 DAY: monday
+TITLE: Chest & Back
+NOTES: Push phase. Work every set to true muscular failure. Add weight or a rep vs last week.
   Incline Press         | chest     | w:1x10@30kg, w:1x8@45kg, 1x8@60kg
   Flat DB Press         | chest     | w:1x8@40kg, 1x8@60kg
   Pec Deck              | chest     | 1x10@35kg
@@ -97,9 +108,13 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@25kg
 
 DAY: tuesday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 DAY: wednesday
+TITLE: Legs
+NOTES: Push phase. Work to failure on leg press. Full range of motion — feel the quad stretch at the bottom.
   Leg Extension         | legs      | w:1x12@25kg, w:1x12@40kg, 1x12@55kg
   Leg Press             | legs      | w:1x10@80kg, w:1x10@120kg, 1x10@160kg
   Leg Curl              | legs      | w:1x10@20kg, 1x10@40kg
@@ -107,6 +122,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | w:1x12@40kg, 1x15@70kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves
+NOTES: Push phase. Work to failure. Controlled negative on curls and pushdowns — squeeze the contraction.
   Overhead Press        | shoulders | w:1x10@20kg, w:1x8@30kg, 1x8@40kg
   Lateral Raise         | shoulders | w:1x10@5kg, 1x12@10kg
   Rear Delt Fly         | shoulders | 1x12@10kg
@@ -115,17 +132,19 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@45kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 
 
 # ==== PLAN 03 — CYCLE 1 DELOAD ====
-# ~60% of push weights. Stop 3-4 reps short. Do not chase failure.
-# Cardio: dropped to 1x/week (Sat only) to match the lifting deload.
 WEEKS: 2
 START: 2026-07-13
 
 DAY: monday
+TITLE: Chest & Back (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure — do not chase it.
   Incline Press         | chest     | w:1x10@20kg, 1x10@35kg
   Flat DB Press         | chest     | 1x10@35kg
   Pec Deck              | chest     | 1x12@20kg
@@ -134,6 +153,8 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@15kg
 
 DAY: wednesday
+TITLE: Legs (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure.
   Leg Extension         | legs      | w:1x12@20kg, 1x12@35kg
   Leg Press             | legs      | w:1x10@60kg, 1x10@95kg
   Leg Curl              | legs      | 1x10@25kg
@@ -141,6 +162,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | 1x15@40kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure.
   Overhead Press        | shoulders | w:1x10@15kg, 1x10@25kg
   Lateral Raise         | shoulders | 1x12@6kg
   Rear Delt Fly         | shoulders | 1x12@6kg
@@ -149,7 +172,9 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@30kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: Deload cardio: 90sec easy spin, then 3×20sec sprints. Keep effort honest but not maximal. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 
 
@@ -158,6 +183,8 @@ WEEKS: 6
 START: 2026-07-27
 
 DAY: monday
+TITLE: Chest & Back
+NOTES: Push phase. Work every set to true muscular failure. Add weight or a rep vs last week.
   Incline Press         | chest     | w:1x10@30kg, w:1x8@45kg, 1x8@62kg
   Flat DB Press         | chest     | w:1x8@40kg, 1x8@62kg
   Pec Deck              | chest     | 1x10@37kg
@@ -166,9 +193,13 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@27kg
 
 DAY: tuesday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 DAY: wednesday
+TITLE: Legs
+NOTES: Push phase. Work to failure on leg press. Full range of motion — feel the quad stretch at the bottom.
   Leg Extension         | legs      | w:1x12@25kg, w:1x12@40kg, 1x12@57kg
   Leg Press             | legs      | w:1x10@80kg, w:1x10@120kg, 1x10@165kg
   Leg Curl              | legs      | w:1x10@20kg, 1x10@42kg
@@ -176,6 +207,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | w:1x12@40kg, 1x15@72kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves
+NOTES: Push phase. Work to failure. Controlled negative on curls and pushdowns — squeeze the contraction.
   Overhead Press        | shoulders | w:1x10@20kg, w:1x8@30kg, 1x8@42kg
   Lateral Raise         | shoulders | w:1x10@5kg, 1x12@10kg
   Rear Delt Fly         | shoulders | 1x12@11kg
@@ -184,7 +217,9 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@47kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 
 
@@ -193,6 +228,8 @@ WEEKS: 2
 START: 2026-09-07
 
 DAY: monday
+TITLE: Chest & Back (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure — do not chase it.
   Incline Press         | chest     | w:1x10@20kg, 1x10@37kg
   Flat DB Press         | chest     | 1x10@37kg
   Pec Deck              | chest     | 1x12@22kg
@@ -201,6 +238,8 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@16kg
 
 DAY: wednesday
+TITLE: Legs (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure.
   Leg Extension         | legs      | w:1x12@20kg, 1x12@35kg
   Leg Press             | legs      | w:1x10@60kg, 1x10@100kg
   Leg Curl              | legs      | 1x10@25kg
@@ -208,6 +247,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | 1x15@42kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure.
   Overhead Press        | shoulders | w:1x10@15kg, 1x10@25kg
   Lateral Raise         | shoulders | 1x12@6kg
   Rear Delt Fly         | shoulders | 1x12@7kg
@@ -216,7 +257,9 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@30kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: Deload cardio: 90sec easy spin, then 3×20sec sprints. Keep effort honest but not maximal. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 
 
@@ -226,6 +269,8 @@ WEEKS: 6
 START: 2026-09-21
 
 DAY: monday
+TITLE: Chest & Back
+NOTES: Push phase. Work every set to true muscular failure. Add weight or a rep vs last week.
   Incline Press         | chest     | w:1x10@30kg, w:1x8@45kg, 1x8@65kg
   Flat DB Press         | chest     | w:1x8@40kg, 1x8@65kg
   Pec Deck              | chest     | 1x10@40kg
@@ -234,9 +279,13 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@30kg
 
 DAY: tuesday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 DAY: wednesday
+TITLE: Legs
+NOTES: Push phase. Work to failure on leg press. Full range of motion — feel the quad stretch at the bottom.
   Leg Extension         | legs      | w:1x12@25kg, w:1x12@40kg, 1x12@60kg
   Leg Press             | legs      | w:1x10@80kg, w:1x10@120kg, 1x10@170kg
   Leg Curl              | legs      | w:1x10@20kg, 1x10@45kg
@@ -244,6 +293,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | w:1x12@40kg, 1x15@75kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves
+NOTES: Push phase. Work to failure. Controlled negative on curls and pushdowns — squeeze the contraction.
   Overhead Press        | shoulders | w:1x10@20kg, w:1x8@30kg, 1x8@45kg
   Lateral Raise         | shoulders | w:1x10@5kg, 1x12@11kg
   Rear Delt Fly         | shoulders | 1x12@12kg
@@ -252,7 +303,9 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@50kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 
 # --- FULL WEEK OFF: 2026-11-02 to 2026-11-08. No plan. No gym. No cardio. ---
@@ -265,6 +318,8 @@ WEEKS: 6
 START: 2026-11-09
 
 DAY: monday
+TITLE: Chest & Back
+NOTES: Push phase. Work every set to true muscular failure. Add weight or a rep vs last week.
   Incline Press         | chest     | w:1x10@30kg, w:1x8@47kg, 1x8@67kg
   Flat DB Press         | chest     | w:1x8@42kg, 1x8@67kg
   Pec Deck              | chest     | 1x10@42kg
@@ -273,9 +328,13 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@32kg
 
 DAY: tuesday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 DAY: wednesday
+TITLE: Legs
+NOTES: Push phase. Work to failure on leg press. Full range of motion — feel the quad stretch at the bottom.
   Leg Extension         | legs      | w:1x12@25kg, w:1x12@42kg, 1x12@62kg
   Leg Press             | legs      | w:1x10@80kg, w:1x10@125kg, 1x10@175kg
   Leg Curl              | legs      | w:1x10@22kg, 1x10@47kg
@@ -283,6 +342,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | w:1x12@42kg, 1x15@77kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves
+NOTES: Push phase. Work to failure. Controlled negative on curls and pushdowns — squeeze the contraction.
   Overhead Press        | shoulders | w:1x10@20kg, w:1x8@32kg, 1x8@47kg
   Lateral Raise         | shoulders | w:1x10@6kg, 1x12@12kg
   Rear Delt Fly         | shoulders | 1x12@12kg
@@ -291,7 +352,9 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@52kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 
 
@@ -300,6 +363,8 @@ WEEKS: 2
 START: 2026-12-21
 
 DAY: monday
+TITLE: Chest & Back (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure — do not chase it.
   Incline Press         | chest     | w:1x10@22kg, 1x10@40kg
   Flat DB Press         | chest     | 1x10@40kg
   Pec Deck              | chest     | 1x12@25kg
@@ -308,6 +373,8 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@20kg
 
 DAY: wednesday
+TITLE: Legs (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure.
   Leg Extension         | legs      | w:1x12@22kg, 1x12@37kg
   Leg Press             | legs      | w:1x10@65kg, 1x10@105kg
   Leg Curl              | legs      | 1x10@27kg
@@ -315,6 +382,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | 1x15@45kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure.
   Overhead Press        | shoulders | w:1x10@15kg, 1x10@27kg
   Lateral Raise         | shoulders | 1x12@7kg
   Rear Delt Fly         | shoulders | 1x12@7kg
@@ -323,7 +392,9 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@32kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: Deload cardio: 90sec easy spin, then 3×20sec sprints. Keep effort honest but not maximal. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 
 
@@ -332,6 +403,8 @@ WEEKS: 6
 START: 2027-01-04
 
 DAY: monday
+TITLE: Chest & Back
+NOTES: Push phase. Work every set to true muscular failure. Add weight or a rep vs last week.
   Incline Press         | chest     | w:1x10@32kg, w:1x8@50kg, 1x8@70kg
   Flat DB Press         | chest     | w:1x8@45kg, 1x8@70kg
   Pec Deck              | chest     | 1x10@45kg
@@ -340,9 +413,13 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@35kg
 
 DAY: tuesday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 DAY: wednesday
+TITLE: Legs
+NOTES: Push phase. Work to failure on leg press. Full range of motion — feel the quad stretch at the bottom.
   Leg Extension         | legs      | w:1x12@27kg, w:1x12@45kg, 1x12@65kg
   Leg Press             | legs      | w:1x10@90kg, w:1x10@130kg, 1x10@180kg
   Leg Curl              | legs      | w:1x10@25kg, 1x10@50kg
@@ -350,6 +427,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | w:1x12@45kg, 1x15@80kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves
+NOTES: Push phase. Work to failure. Controlled negative on curls and pushdowns — squeeze the contraction.
   Overhead Press        | shoulders | w:1x10@22kg, w:1x8@35kg, 1x8@50kg
   Lateral Raise         | shoulders | w:1x10@6kg, 1x12@12kg
   Rear Delt Fly         | shoulders | 1x12@13kg
@@ -358,7 +437,9 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@55kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 
 
@@ -367,6 +448,8 @@ WEEKS: 2
 START: 2027-02-15
 
 DAY: monday
+TITLE: Chest & Back (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure — do not chase it.
   Incline Press         | chest     | w:1x10@22kg, 1x10@42kg
   Flat DB Press         | chest     | 1x10@42kg
   Pec Deck              | chest     | 1x12@27kg
@@ -375,6 +458,8 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@22kg
 
 DAY: wednesday
+TITLE: Legs (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure.
   Leg Extension         | legs      | w:1x12@22kg, 1x12@40kg
   Leg Press             | legs      | w:1x10@65kg, 1x10@110kg
   Leg Curl              | legs      | 1x10@30kg
@@ -382,6 +467,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | 1x15@47kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure.
   Overhead Press        | shoulders | w:1x10@17kg, 1x10@30kg
   Lateral Raise         | shoulders | 1x12@7kg
   Rear Delt Fly         | shoulders | 1x12@8kg
@@ -390,7 +477,9 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@33kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: Deload cardio: 90sec easy spin, then 3×20sec sprints. Keep effort honest but not maximal. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 
 
@@ -399,6 +488,8 @@ WEEKS: 6
 START: 2027-03-01
 
 DAY: monday
+TITLE: Chest & Back
+NOTES: Push phase. Work every set to true muscular failure. Add weight or a rep vs last week.
   Incline Press         | chest     | w:1x10@32kg, w:1x8@52kg, 1x8@72kg
   Flat DB Press         | chest     | w:1x8@47kg, 1x8@72kg
   Pec Deck              | chest     | 1x10@47kg
@@ -407,9 +498,13 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@37kg
 
 DAY: tuesday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 DAY: wednesday
+TITLE: Legs
+NOTES: Push phase. Work to failure on leg press. Full range of motion — feel the quad stretch at the bottom.
   Leg Extension         | legs      | w:1x12@27kg, w:1x12@47kg, 1x12@67kg
   Leg Press             | legs      | w:1x10@90kg, w:1x10@135kg, 1x10@185kg
   Leg Curl              | legs      | w:1x10@25kg, 1x10@52kg
@@ -417,6 +512,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | w:1x12@47kg, 1x15@82kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves
+NOTES: Push phase. Work to failure. Controlled negative on curls and pushdowns — squeeze the contraction.
   Overhead Press        | shoulders | w:1x10@22kg, w:1x8@35kg, 1x8@52kg
   Lateral Raise         | shoulders | w:1x10@7kg, 1x12@13kg
   Rear Delt Fly         | shoulders | 1x12@14kg
@@ -425,7 +522,9 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@57kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: 90sec easy spin warm-up, then 3×20sec all-out sprints. Rest 1min between sprints. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 
 
@@ -434,6 +533,8 @@ WEEKS: 2
 START: 2027-04-12
 
 DAY: monday
+TITLE: Chest & Back (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure — do not chase it.
   Incline Press         | chest     | w:1x10@22kg, 1x10@45kg
   Flat DB Press         | chest     | 1x10@45kg
   Pec Deck              | chest     | 1x12@30kg
@@ -442,6 +543,8 @@ DAY: monday
   Straight-Arm Pulldown | back      | 1x12@22kg
 
 DAY: wednesday
+TITLE: Legs (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure.
   Leg Extension         | legs      | w:1x12@25kg, 1x12@40kg
   Leg Press             | legs      | w:1x10@70kg, 1x10@115kg
   Leg Curl              | legs      | 1x10@32kg
@@ -449,6 +552,8 @@ DAY: wednesday
   Standing Calf Raise   | calves    | 1x15@50kg
 
 DAY: friday
+TITLE: Shoulders, Arms & Calves (Deload)
+NOTES: Deload week. ~60% of push weights. Stop 3-4 reps short of failure.
   Overhead Press        | shoulders | w:1x10@17kg, 1x10@32kg
   Lateral Raise         | shoulders | 1x12@8kg
   Rear Delt Fly         | shoulders | 1x12@8kg
@@ -457,7 +562,9 @@ DAY: friday
   Seated Calf Raise     | calves    | 1x15@35kg
 
 DAY: saturday
-  Air Bike Sprints      | cardio    | w:1x90sec, 3x20sec
+TITLE: AeroBike — Sprint Session
+NOTES: Deload cardio: 90sec easy spin, then 3×20sec sprints. Keep effort honest but not maximal. Log peak watts.
+  AeroBike Sprints      | cardio    | w:1x90sec, 3x20sec
 
 
 # --- FULL WEEK OFF: 2027-04-26 to 2027-05-02. End of year-1 plan. ---
