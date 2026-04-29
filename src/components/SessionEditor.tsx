@@ -227,17 +227,18 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
       </section>
 
       {/* Exercises */}
-      <section className="space-y-3">
+      <section className="space-y-2">
         {data.exercises.map((ex, i) => (
           <div
             key={i}
-            className="rounded-2xl border border-black/10 bg-white p-3 shadow-sm"
+            className="rounded-xl border border-black/10 bg-white p-2.5 shadow-sm"
           >
-            <div className="flex items-start gap-2">
+            {/* Name + muscle group + delete on one row */}
+            <div className="flex items-center gap-1.5">
               <input
                 list="exercise-library"
                 placeholder="Exercise name"
-                className="flex-1 rounded-lg border border-black/10 px-3 py-2 text-base focus:border-ink focus:outline-none"
+                className="min-w-0 flex-1 rounded-lg border border-black/10 px-2.5 py-1.5 text-sm focus:border-ink focus:outline-none"
                 value={ex.name}
                 onChange={(e) => {
                   const name = e.target.value;
@@ -250,30 +251,27 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
                   });
                 }}
               />
+              <select
+                className="w-[88px] shrink-0 rounded-lg border border-black/10 py-1.5 pl-1.5 pr-1 text-xs"
+                value={ex.muscleGroup}
+                onChange={(e) =>
+                  updateExercise(i, { muscleGroup: e.target.value as MuscleGroup })
+                }
+              >
+                {MUSCLE_GROUPS.map((g) => (
+                  <option key={g} value={g}>{g}</option>
+                ))}
+              </select>
               <button
                 aria-label="Remove exercise"
                 onClick={() => removeExercise(i)}
-                className="rounded-lg p-2 text-ink/40 hover:bg-black/5 hover:text-accent"
+                className="shrink-0 rounded-lg p-1.5 text-ink/30 hover:bg-black/5 hover:text-red-500"
               >
-                <Trash2 size={18} />
+                <Trash2 size={15} />
               </button>
             </div>
 
-            <select
-              className="mt-2 w-full rounded-lg border border-black/10 px-3 py-2 text-sm"
-              value={ex.muscleGroup}
-              onChange={(e) =>
-                updateExercise(i, { muscleGroup: e.target.value as MuscleGroup })
-              }
-            >
-              {MUSCLE_GROUPS.map((g) => (
-                <option key={g} value={g}>
-                  {g}
-                </option>
-              ))}
-            </select>
-
-            <div className="mt-3 space-y-1.5">
+            <div className="mt-2 space-y-1">
               {ex.sets.map((s, j) => (
                 <SetRow
                   key={j}
@@ -284,18 +282,18 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
               ))}
             </div>
 
-            <div className="mt-2 flex flex-wrap gap-1.5">
+            <div className="mt-1.5 flex flex-wrap gap-1">
               {ex.muscleGroup === "cardio" ? (
                 <>
                   <button
                     onClick={() => addSet(i, "warmup")}
-                    className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs text-sky-700 hover:bg-sky-100"
+                    className="rounded-full border border-sky-200 bg-sky-50 px-2.5 py-0.5 text-xs text-sky-700 hover:bg-sky-100"
                   >
                     + Warm-up
                   </button>
                   <button
                     onClick={() => addSet(i, "working")}
-                    className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
+                    className="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 hover:bg-blue-100"
                   >
                     + Work
                   </button>
@@ -304,30 +302,30 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
                 <>
                   <button
                     onClick={() => addSet(i, "warmup")}
-                    className="rounded-full border border-black/10 px-3 py-1 text-xs text-ink/70 hover:bg-black/5"
+                    className="rounded-full border border-black/10 px-2.5 py-0.5 text-xs text-ink/70 hover:bg-black/5"
                   >
                     + Warm-up
                   </button>
                   <button
                     onClick={() => addSet(i, "working")}
-                    className="rounded-full border border-accent/40 bg-accent/5 px-3 py-1 text-xs font-medium text-accent hover:bg-accent/10"
+                    className="rounded-full border border-accent/40 bg-accent/5 px-2.5 py-0.5 text-xs font-medium text-accent hover:bg-accent/10"
                   >
-                    + Working set
+                    + Work
                   </button>
                   <button
                     onClick={() => addSet(i, "drop")}
-                    className="rounded-full border border-black/10 px-3 py-1 text-xs text-ink/70 hover:bg-black/5"
+                    className="rounded-full border border-black/10 px-2.5 py-0.5 text-xs text-ink/70 hover:bg-black/5"
                   >
-                    + Drop set
+                    + Drop
                   </button>
                 </>
               )}
             </div>
 
             <textarea
-              placeholder="Exercise notes…"
-              className="mt-3 w-full resize-none rounded-lg border border-black/10 bg-paper px-3 py-2 text-sm focus:border-ink focus:outline-none"
-              rows={2}
+              placeholder="Notes…"
+              className="mt-1.5 w-full resize-none rounded-lg border border-black/10 bg-paper px-2.5 py-1.5 text-xs text-ink/70 focus:border-ink focus:outline-none"
+              rows={1}
               value={ex.notes ?? ""}
               onChange={(e) => updateExercise(i, { notes: e.target.value })}
             />
@@ -336,7 +334,7 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
 
         <button
           onClick={addExercise}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-black/15 py-4 text-sm font-medium text-ink/60 hover:border-ink/40 hover:text-ink"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-black/15 py-3 text-sm font-medium text-ink/60 hover:border-ink/40 hover:text-ink"
         >
           <Plus size={18} /> Add exercise
         </button>
@@ -498,20 +496,20 @@ function SetRow({
     const cardioLabel = isWarmup ? "Warm" : "Work";
     const cardioLabelColor = isWarmup ? "text-sky-600" : "text-blue-600";
     return (
-      <div className={`flex items-center gap-1.5 rounded-lg border px-2 py-1.5 ${cardioStyle}`}>
-        <span className={`w-14 shrink-0 text-[10px] font-semibold uppercase tracking-wide ${cardioLabelColor}`}>
+      <div className={`flex items-center gap-1 rounded-lg border px-2 py-1 ${cardioStyle}`}>
+        <span className={`w-10 shrink-0 text-[10px] font-semibold uppercase tracking-wide ${cardioLabelColor}`}>
           {cardioLabel}
         </span>
         <input
           type="number"
           inputMode="numeric"
-          placeholder="duration"
-          className="w-16 rounded border border-black/10 bg-white px-2 py-1 text-center text-sm"
+          placeholder="dur"
+          className="w-14 rounded border border-black/10 bg-white px-1.5 py-0.5 text-center text-sm"
           value={set.reps || ""}
           onChange={(e) => onChange({ reps: parseInt(e.target.value) || 0 })}
         />
         <select
-          className="rounded border border-black/10 bg-white px-1 py-1 text-xs"
+          className="rounded border border-black/10 bg-white px-0.5 py-0.5 text-xs"
           value={set.durationUnit}
           onChange={(e) => onChange({ durationUnit: e.target.value as DurationUnit })}
         >
@@ -521,9 +519,9 @@ function SetRow({
         <button
           onClick={onRemove}
           aria-label="Remove set"
-          className="ml-auto rounded p-1 text-ink/30 hover:bg-black/5 hover:text-ink/60"
+          className="ml-auto rounded p-0.5 text-ink/30 hover:bg-black/5 hover:text-ink/60"
         >
-          <Trash2 size={14} />
+          <Trash2 size={13} />
         </button>
       </div>
     );
@@ -536,8 +534,8 @@ function SetRow({
       ? "border-purple-300 bg-purple-50"
       : "border-black/10 bg-paper";
   return (
-    <div className={`flex items-center gap-1.5 rounded-lg border px-2 py-1.5 ${kindStyle}`}>
-      <span className="w-14 shrink-0 text-[10px] font-semibold uppercase tracking-wide text-ink/60">
+    <div className={`flex items-center gap-1 rounded-lg border px-2 py-1 ${kindStyle}`}>
+      <span className="w-10 shrink-0 text-[10px] font-semibold uppercase tracking-wide text-ink/60">
         {set.kind === "working" ? "Work" : set.kind === "drop" ? "Drop" : "Warm"}
       </span>
       <input
@@ -545,21 +543,21 @@ function SetRow({
         inputMode="decimal"
         step="0.5"
         placeholder="kg"
-        className="w-16 rounded border border-black/10 bg-white px-2 py-1 text-center text-sm"
+        className="w-14 rounded border border-black/10 bg-white px-1.5 py-0.5 text-center text-sm"
         value={set.weight || ""}
         onChange={(e) => onChange({ weight: parseFloat(e.target.value) || 0 })}
       />
-      <span className="text-xs text-ink/50">×</span>
+      <span className="text-xs text-ink/40">×</span>
       <input
         type="number"
         inputMode="numeric"
         placeholder="reps"
-        className="w-14 rounded border border-black/10 bg-white px-2 py-1 text-center text-sm"
+        className="w-12 rounded border border-black/10 bg-white px-1.5 py-0.5 text-center text-sm"
         value={set.reps || ""}
         onChange={(e) => onChange({ reps: parseInt(e.target.value) || 0 })}
       />
       <select
-        className="rounded border border-black/10 bg-white px-1 py-1 text-xs"
+        className="rounded border border-black/10 bg-white px-0.5 py-0.5 text-xs"
         value={set.unit}
         onChange={(e) => onChange({ unit: e.target.value as Unit })}
       >
@@ -567,7 +565,7 @@ function SetRow({
         <option value="lb">lb</option>
       </select>
       {set.kind === "working" && (
-        <label className="flex items-center gap-1 text-[11px] text-ink/70">
+        <label className="flex items-center gap-0.5 text-[11px] text-ink/60">
           <input
             type="checkbox"
             checked={set.toFailure}
@@ -579,9 +577,9 @@ function SetRow({
       <button
         onClick={onRemove}
         aria-label="Remove set"
-        className="ml-auto rounded p-1 text-ink/30 hover:bg-black/5 hover:text-accent"
+        className="ml-auto rounded p-0.5 text-ink/30 hover:bg-black/5 hover:text-accent"
       >
-        <Trash2 size={14} />
+        <Trash2 size={13} />
       </button>
     </div>
   );
