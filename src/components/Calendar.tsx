@@ -32,6 +32,7 @@ export default function Calendar({
   }, []);
   const expSet = useMemo(() => new Set(experimentDates), [experimentDates]);
 
+  const mParam = `${year}-${String(month + 1).padStart(2, "0")}`;
   const first = new Date(Date.UTC(year, month, 1));
   const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
   // Monday-first offset
@@ -96,8 +97,8 @@ export default function Calendar({
           const isToday = c.key === todayKey;
           const hasExp = expSet.has(c.key);
           const href = session
-            ? `/session/${session.id}`
-            : `/session/new?date=${c.key}`;
+            ? `/session/${session.id}?back=${mParam}`
+            : `/session/new?date=${c.key}&back=${mParam}`;
           return (
             <Link
               key={c.key}

@@ -1,4 +1,4 @@
-import type { MuscleGroup, SetKind } from "@prisma/client";
+import type { MuscleGroup, SetKind } from "@/lib/types";
 
 export interface ParsedSet {
   kind: SetKind;
@@ -6,6 +6,7 @@ export interface ParsedSet {
   unit: "kg" | "lb";
   reps: number;
   toFailure: boolean;
+  durationUnit: "min" | "sec" | null;
 }
 
 export interface ParsedExercise {
@@ -36,7 +37,8 @@ const DAY_NAMES: Record<string, number> = {
 
 const MUSCLE_MAP: Record<string, MuscleGroup> = {
   chest: "chest", back: "back", legs: "legs", shoulders: "shoulders",
-  biceps: "biceps", triceps: "triceps", calves: "calves", abs: "abs", other: "other",
+  biceps: "biceps", triceps: "triceps", calves: "calves", abs: "abs",
+  cardio: "cardio", other: "other",
 };
 
 function nextOccurrence(from: Date, dayOfWeek: number): Date {
@@ -53,6 +55,18 @@ function parseSetGroup(text: string, lineNum: number, errors: ParseError[]): Par
   if (t.startsWith("w:")) { kind = "warmup"; t = t.slice(2); }
   else if (t.startsWith("d:")) { kind = "drop"; t = t.slice(2); }
 
+  // Cardio format: NxDURATION (e.g. 3x20min, 1x45sec)
+  const cardio = t.match(/^(\d+)\s*x\s*(\d+)\s*(min|sec)/i);
+  if (cardio) {
+    const count = parseInt(cardio[1]);
+    const duration = parseInt(cardio[2]);
+    const durationUnit = cardio[3].toLowerCase() as "min" | "sec";
+    return Array.from({ length: count }, () => ({
+      kind, weight: 0, unit: "kg" as const, reps: duration, toFailure: false, durationUnit,
+    }));
+  }
+
+  // Strength format: NxREPS@WEIGHT
   const m = t.match(/^(\d+)\s*x\s*(\d+)\s*@\s*([\d.]+)\s*(kg|lb)?/i);
   if (!m) {
     errors.push({ line: lineNum, message: `Cannot parse set: "${text.trim()}"` });
@@ -64,7 +78,7 @@ function parseSetGroup(text: string, lineNum: number, errors: ParseError[]): Par
   const weight = parseFloat(m[3]);
   const unit: "kg" | "lb" = (m[4]?.toLowerCase() as "kg" | "lb") ?? "kg";
 
-  return Array.from({ length: count }, () => ({ kind, weight, unit, reps, toFailure: false }));
+  return Array.from({ length: count }, () => ({ kind, weight, unit, reps, toFailure: false, durationUnit: null }));
 }
 
 function parseExerciseLine(line: string, lineNum: number, errors: ParseError[]): ParsedExercise | null {

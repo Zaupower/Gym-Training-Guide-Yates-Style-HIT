@@ -13,6 +13,11 @@ enum Unit {
   lb
 }
 
+enum DurationUnit {
+  min
+  sec
+}
+
 enum OverallFeel {
   strong
   flat
@@ -28,6 +33,7 @@ enum MuscleGroup {
   triceps
   calves
   abs
+  cardio
   other
 }
 
@@ -147,12 +153,13 @@ model ExerciseSet {
   id         String   @id @default(cuid())
   exerciseId String
   exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  kind       SetKind
-  weight     Float
-  unit       Unit     @default(kg)
-  reps       Int
-  toFailure  Boolean  @default(false)
-  order      Int      @default(0)
+  kind         SetKind
+  weight       Float
+  unit         Unit         @default(kg)
+  reps         Int
+  toFailure    Boolean      @default(false)
+  durationUnit DurationUnit?
+  order        Int          @default(0)
 
   @@index([exerciseId])
 }

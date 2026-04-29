@@ -50,6 +50,7 @@ export async function POST(
                 unit: s.unit,
                 reps: s.reps,
                 toFailure: s.toFailure,
+                durationUnit: s.durationUnit ?? null,
                 order: sOrder,
               })),
             },

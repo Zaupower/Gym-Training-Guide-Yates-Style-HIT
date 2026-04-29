@@ -7,6 +7,7 @@ export const MUSCLE_GROUPS = [
   "triceps",
   "calves",
   "abs",
+  "cardio",
   "other",
 ] as const;
 export type MuscleGroup = (typeof MUSCLE_GROUPS)[number];
@@ -16,6 +17,7 @@ export type OverallFeel = (typeof OVERALL_FEELS)[number];
 
 export type Unit = "kg" | "lb";
 export type SetKind = "warmup" | "working" | "drop";
+export type DurationUnit = "min" | "sec";
 
 export interface SetInput {
   kind: SetKind;
@@ -23,6 +25,7 @@ export interface SetInput {
   unit: Unit;
   reps: number;
   toFailure: boolean;
+  durationUnit?: DurationUnit | null;
 }
 
 export interface ExerciseInput {

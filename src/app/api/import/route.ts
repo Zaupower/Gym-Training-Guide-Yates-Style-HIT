@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
                 unit: s.unit,
                 reps: s.reps,
                 toFailure: s.toFailure,
+                durationUnit: s.durationUnit ?? null,
                 order: sOrder,
               })),
             },

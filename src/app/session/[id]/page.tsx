@@ -8,13 +8,16 @@ export const dynamic = "force-dynamic";
 
 export default async function SessionPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ back?: string }>;
 }) {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
-  const { id } = await params;
+  const [{ id }, sp] = await Promise.all([params, searchParams]);
+  const back = sp.back;
   const session = await prisma.session.findFirst({
     where: { id, userId: user.id },
     include: {
@@ -59,6 +62,7 @@ export default async function SessionPage({
       initial={initial}
       existingId={session.id}
       defaultUnit={defaultUnit}
+      back={back}
     />
   );
 }

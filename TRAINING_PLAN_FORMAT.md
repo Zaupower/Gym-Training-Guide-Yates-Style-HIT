@@ -65,9 +65,9 @@ Exercise Name | muscle_group | set_spec
 ```
 
 ### Muscle Groups
-`chest` · `back` · `legs` · `shoulders` · `biceps` · `triceps` · `calves` · `abs` · `other`
+`chest` · `back` · `legs` · `shoulders` · `biceps` · `triceps` · `calves` · `abs` · `cardio` · `other`
 
-### Set Specification — `NxREPS@WEIGHTunit`
+### Strength Set Specification — `NxREPS@WEIGHTunit`
 
 | Example | Meaning |
 |---------|---------|
@@ -88,6 +88,24 @@ Bench Press | chest | w:2x12@40kg, 3x8@80kg, d:1x15@60kg
 This creates: 2 warmup + 3 working + 1 drop set.
 
 **Unit** — `kg` or `lb`. Defaults to `kg` if omitted.
+
+### Cardio Set Specification — `NxDURATION`
+
+Use muscle group `cardio` and a time-based spec instead of weight:
+
+| Example | Meaning |
+|---------|---------|
+| `1x20min` | 1 set · 20 minutes |
+| `3x45sec` | 3 sets · 45 seconds each |
+
+```
+DAY: tuesday
+  Stationary Bike | cardio | 1x20min
+  Jump Rope       | cardio | 3x45sec
+
+DAY: saturday
+  Outdoor Walk    | cardio | 1x30min
+```
 
 ---
 

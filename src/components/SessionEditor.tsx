@@ -14,6 +14,7 @@ import Link from "next/link";
 import {
   MUSCLE_GROUPS,
   OVERALL_FEELS,
+  type DurationUnit,
   type ExerciseInput,
   type MuscleGroup,
   type OverallFeel,
@@ -26,6 +27,7 @@ interface Props {
   initial: SessionInput;
   existingId?: string;
   defaultUnit: Unit;
+  back?: string; // YYYY-MM to return to on the calendar
 }
 
 const newSet = (kind: SetInput["kind"], unit: Unit): SetInput => ({
@@ -34,6 +36,16 @@ const newSet = (kind: SetInput["kind"], unit: Unit): SetInput => ({
   unit,
   reps: 0,
   toFailure: kind === "working",
+  durationUnit: null,
+});
+
+const newCardioSet = (): SetInput => ({
+  kind: "working",
+  weight: 0,
+  unit: "kg",
+  reps: 20,
+  toFailure: false,
+  durationUnit: "min",
 });
 
 const newExercise = (unit: Unit): ExerciseInput => ({
@@ -44,7 +56,7 @@ const newExercise = (unit: Unit): ExerciseInput => ({
   sets: [newSet("working", unit)],
 });
 
-export default function SessionEditor({ initial, existingId, defaultUnit }: Props) {
+export default function SessionEditor({ initial, existingId, defaultUnit, back }: Props) {
   const router = useRouter();
   const [data, setData] = useState<SessionInput>(initial);
   const [library, setLibrary] = useState<{ name: string; muscleGroup: MuscleGroup }[]>(
@@ -106,7 +118,16 @@ export default function SessionEditor({ initial, existingId, defaultUnit }: Prop
   function updateExercise(i: number, p: Partial<ExerciseInput>) {
     setData((d) => {
       const ex = [...d.exercises];
-      ex[i] = { ...ex[i], ...p };
+      const prev = ex[i];
+      const updated = { ...prev, ...p };
+      if (p.muscleGroup !== undefined && p.muscleGroup !== prev.muscleGroup) {
+        if (p.muscleGroup === "cardio") {
+          updated.sets = [newCardioSet()];
+        } else if (prev.muscleGroup === "cardio") {
+          updated.sets = [newSet("working", defaultUnit)];
+        }
+      }
+      ex[i] = updated;
       return { ...d, exercises: ex };
     });
   }
@@ -122,7 +143,8 @@ export default function SessionEditor({ initial, existingId, defaultUnit }: Prop
   function addSet(i: number, kind: SetInput["kind"]) {
     setData((d) => {
       const ex = [...d.exercises];
-      ex[i] = { ...ex[i], sets: [...ex[i].sets, newSet(kind, defaultUnit)] };
+      const set = ex[i].muscleGroup === "cardio" ? newCardioSet() : newSet(kind, defaultUnit);
+      ex[i] = { ...ex[i], sets: [...ex[i].sets, set] };
       return { ...d, exercises: ex };
     });
   }
@@ -151,7 +173,7 @@ export default function SessionEditor({ initial, existingId, defaultUnit }: Prop
     <div className="px-4 pt-4">
       <div className="mb-4 flex items-center justify-between">
         <Link
-          href="/"
+          href={back ? `/?m=${back}` : "/"}
           className="flex items-center gap-1 rounded-lg px-2 py-1 text-sm text-ink/70 hover:bg-black/5"
         >
           <ChevronLeft size={18} /> Back
@@ -256,24 +278,35 @@ export default function SessionEditor({ initial, existingId, defaultUnit }: Prop
             </div>
 
             <div className="mt-2 flex flex-wrap gap-1.5">
-              <button
-                onClick={() => addSet(i, "warmup")}
-                className="rounded-full border border-black/10 px-3 py-1 text-xs text-ink/70 hover:bg-black/5"
-              >
-                + Warm-up
-              </button>
-              <button
-                onClick={() => addSet(i, "working")}
-                className="rounded-full border border-accent/40 bg-accent/5 px-3 py-1 text-xs font-medium text-accent hover:bg-accent/10"
-              >
-                + Working set
-              </button>
-              <button
-                onClick={() => addSet(i, "drop")}
-                className="rounded-full border border-black/10 px-3 py-1 text-xs text-ink/70 hover:bg-black/5"
-              >
-                + Drop set
-              </button>
+              {ex.muscleGroup === "cardio" ? (
+                <button
+                  onClick={() => addSet(i, "working")}
+                  className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
+                >
+                  + Set
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => addSet(i, "warmup")}
+                    className="rounded-full border border-black/10 px-3 py-1 text-xs text-ink/70 hover:bg-black/5"
+                  >
+                    + Warm-up
+                  </button>
+                  <button
+                    onClick={() => addSet(i, "working")}
+                    className="rounded-full border border-accent/40 bg-accent/5 px-3 py-1 text-xs font-medium text-accent hover:bg-accent/10"
+                  >
+                    + Working set
+                  </button>
+                  <button
+                    onClick={() => addSet(i, "drop")}
+                    className="rounded-full border border-black/10 px-3 py-1 text-xs text-ink/70 hover:bg-black/5"
+                  >
+                    + Drop set
+                  </button>
+                </>
+              )}
             </div>
 
             <textarea
@@ -444,6 +477,39 @@ function SetRow({
   onChange: (p: Partial<SetInput>) => void;
   onRemove: () => void;
 }) {
+  if (set.durationUnit) {
+    return (
+      <div className="flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-2 py-1.5">
+        <span className="w-14 shrink-0 text-[10px] font-semibold uppercase tracking-wide text-blue-600">
+          Cardio
+        </span>
+        <input
+          type="number"
+          inputMode="numeric"
+          placeholder="duration"
+          className="w-16 rounded border border-black/10 bg-white px-2 py-1 text-center text-sm"
+          value={set.reps || ""}
+          onChange={(e) => onChange({ reps: parseInt(e.target.value) || 0 })}
+        />
+        <select
+          className="rounded border border-black/10 bg-white px-1 py-1 text-xs"
+          value={set.durationUnit}
+          onChange={(e) => onChange({ durationUnit: e.target.value as DurationUnit })}
+        >
+          <option value="min">min</option>
+          <option value="sec">sec</option>
+        </select>
+        <button
+          onClick={onRemove}
+          aria-label="Remove set"
+          className="ml-auto rounded p-1 text-ink/30 hover:bg-black/5 hover:text-blue-500"
+        >
+          <Trash2 size={14} />
+        </button>
+      </div>
+    );
+  }
+
   const kindStyle =
     set.kind === "working"
       ? "border-accent/40 bg-accent/5"

@@ -22,7 +22,7 @@ describe("todayIso", () => {
 });
 
 describe("constants", () => {
-  it("has the 9 muscle groups from the spec", () => {
+  it("has the 10 muscle groups from the spec", () => {
     expect(MUSCLE_GROUPS).toEqual([
       "chest",
       "back",
@@ -32,6 +32,7 @@ describe("constants", () => {
       "triceps",
       "calves",
       "abs",
+      "cardio",
       "other",
     ]);
   });
