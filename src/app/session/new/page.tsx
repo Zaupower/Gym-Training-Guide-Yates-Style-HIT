@@ -53,6 +53,7 @@ export default async function NewSessionPage({
             unit: s.unit,
             reps: s.reps,
             toFailure: s.toFailure,
+            durationUnit: s.durationUnit ?? null,
           })),
         })),
       }
