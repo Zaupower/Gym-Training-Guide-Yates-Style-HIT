@@ -67,7 +67,7 @@ export default function PlansManager() {
       const data = await res.json();
       setName(""); setContent(""); setShowAdd(false);
       if (data.count > 1) setMessage(`✓ ${data.count} plans imported.`);
-      await load();
+      setPlans((prev) => [...(data.plans as Plan[]), ...prev]);
     } finally {
       setSaving(false);
     }
@@ -84,10 +84,11 @@ export default function PlansManager() {
         setMessage(data?.errors?.map((e: { message: string }) => e.message).join(", ") ?? "Failed.");
       } else if (action === "activate") {
         setMessage(`✓ ${data.created} session${data.created !== 1 ? "s" : ""} added to calendar${data.skipped ? `, ${data.skipped} skipped` : ""}.`);
+        setPlans((prev) => prev.map((p) => p.id === plan.id ? { ...p, isActive: true } : p));
       } else {
         setMessage(`✓ Plan deactivated, ${data.removed} pending session${data.removed !== 1 ? "s" : ""} removed.`);
+        setPlans((prev) => prev.map((p) => p.id === plan.id ? { ...p, isActive: false } : p));
       }
-      await load();
     } finally {
       setBusy(null);
     }
@@ -99,7 +100,7 @@ export default function PlansManager() {
     setMessage("");
     try {
       await fetch(`/api/plans/${plan.id}`, { method: "DELETE" });
-      await load();
+      setPlans((prev) => prev.filter((p) => p.id !== plan.id));
     } finally {
       setBusy(null);
     }
