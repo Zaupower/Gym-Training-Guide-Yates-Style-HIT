@@ -6,6 +6,7 @@ import {
   Plus,
   Trash2,
   ChevronLeft,
+  ChevronDown,
   Save,
   CheckCircle2,
   Loader2,
@@ -66,6 +67,9 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
     "idle"
   );
   const [error, setError] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<boolean[]>(() =>
+    initial.exercises.map(() => false)
+  );
   const draftTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -132,12 +136,18 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
     });
   }
 
+  function toggleExpand(i: number) {
+    setExpanded((prev) => { const n = [...prev]; n[i] = !n[i]; return n; });
+  }
+
   function addExercise() {
     setData((d) => ({ ...d, exercises: [...d.exercises, newExercise(defaultUnit)] }));
+    setExpanded((prev) => [...prev, true]);
   }
 
   function removeExercise(i: number) {
     setData((d) => ({ ...d, exercises: d.exercises.filter((_, idx) => idx !== i) }));
+    setExpanded((prev) => prev.filter((_, idx) => idx !== i));
   }
 
   function addSet(i: number, kind: SetInput["kind"]) {
@@ -231,104 +241,137 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
         {data.exercises.map((ex, i) => (
           <div
             key={i}
-            className="rounded-xl border border-black/10 bg-white p-2.5 shadow-sm"
+            className="overflow-hidden rounded-xl border border-black/10 bg-white shadow-sm"
           >
-            {/* Name + muscle group + delete on one row */}
-            <div className="flex items-center gap-1.5">
-              <input
-                list="exercise-library"
-                placeholder="Exercise name"
-                className="min-w-0 flex-1 rounded-lg border border-black/10 px-2.5 py-1.5 text-sm focus:border-ink focus:outline-none"
-                value={ex.name}
-                onChange={(e) => {
-                  const name = e.target.value;
-                  const match = library.find(
-                    (l) => l.name.toLowerCase() === name.toLowerCase()
-                  );
-                  updateExercise(i, {
-                    name,
-                    ...(match ? { muscleGroup: match.muscleGroup } : {}),
-                  });
-                }}
+            {/* Collapsed header — always visible, tap to toggle */}
+            <button
+              onClick={() => toggleExpand(i)}
+              className="flex w-full items-center gap-2 px-3 py-2.5 text-left active:bg-black/[0.03]"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="truncate text-sm font-semibold text-ink">
+                    {ex.name || <span className="font-normal text-ink/30">New exercise</span>}
+                  </span>
+                  <span className="shrink-0 rounded bg-black/[0.06] px-1.5 py-0.5 text-[10px] capitalize text-ink/50">
+                    {ex.muscleGroup}
+                  </span>
+                </div>
+                {!expanded[i] && (
+                  <p className="mt-0.5 truncate text-[11px] text-ink/45">
+                    {setsSummary(ex.sets)}
+                  </p>
+                )}
+              </div>
+              <ChevronDown
+                size={14}
+                className={`shrink-0 text-ink/30 transition-transform duration-150 ${
+                  expanded[i] ? "rotate-180" : ""
+                }`}
               />
-              <select
-                className="w-[88px] shrink-0 rounded-lg border border-black/10 py-1.5 pl-1.5 pr-1 text-xs"
-                value={ex.muscleGroup}
-                onChange={(e) =>
-                  updateExercise(i, { muscleGroup: e.target.value as MuscleGroup })
-                }
-              >
-                {MUSCLE_GROUPS.map((g) => (
-                  <option key={g} value={g}>{g}</option>
-                ))}
-              </select>
-              <button
-                aria-label="Remove exercise"
-                onClick={() => removeExercise(i)}
-                className="shrink-0 rounded-lg p-1.5 text-ink/30 hover:bg-black/5 hover:text-red-500"
-              >
-                <Trash2 size={15} />
-              </button>
-            </div>
+            </button>
 
-            <div className="mt-2 space-y-1">
-              {ex.sets.map((s, j) => (
-                <SetRow
-                  key={j}
-                  set={s}
-                  onChange={(p) => updateSet(i, j, p)}
-                  onRemove={() => removeSet(i, j)}
+            {/* Expanded edit panel */}
+            {expanded[i] && (
+              <div className="border-t border-black/10 px-2.5 pb-2.5 pt-2">
+                {/* Name + muscle + delete */}
+                <div className="flex items-center gap-1.5">
+                  <input
+                    list="exercise-library"
+                    placeholder="Exercise name"
+                    className="min-w-0 flex-1 rounded-lg border border-black/10 px-2.5 py-1.5 text-sm focus:border-ink focus:outline-none"
+                    value={ex.name}
+                    onChange={(e) => {
+                      const name = e.target.value;
+                      const match = library.find(
+                        (l) => l.name.toLowerCase() === name.toLowerCase()
+                      );
+                      updateExercise(i, {
+                        name,
+                        ...(match ? { muscleGroup: match.muscleGroup } : {}),
+                      });
+                    }}
+                  />
+                  <select
+                    className="w-[88px] shrink-0 rounded-lg border border-black/10 py-1.5 pl-1.5 pr-1 text-xs"
+                    value={ex.muscleGroup}
+                    onChange={(e) =>
+                      updateExercise(i, { muscleGroup: e.target.value as MuscleGroup })
+                    }
+                  >
+                    {MUSCLE_GROUPS.map((g) => (
+                      <option key={g} value={g}>{g}</option>
+                    ))}
+                  </select>
+                  <button
+                    aria-label="Remove exercise"
+                    onClick={() => removeExercise(i)}
+                    className="shrink-0 rounded-lg p-1.5 text-ink/30 hover:bg-black/5 hover:text-red-500"
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </div>
+
+                <div className="mt-2 space-y-1">
+                  {ex.sets.map((s, j) => (
+                    <SetRow
+                      key={j}
+                      set={s}
+                      onChange={(p) => updateSet(i, j, p)}
+                      onRemove={() => removeSet(i, j)}
+                    />
+                  ))}
+                </div>
+
+                <div className="mt-1.5 flex flex-wrap gap-1">
+                  {ex.muscleGroup === "cardio" ? (
+                    <>
+                      <button
+                        onClick={() => addSet(i, "warmup")}
+                        className="rounded-full border border-sky-200 bg-sky-50 px-2.5 py-0.5 text-xs text-sky-700 hover:bg-sky-100"
+                      >
+                        + Warm-up
+                      </button>
+                      <button
+                        onClick={() => addSet(i, "working")}
+                        className="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 hover:bg-blue-100"
+                      >
+                        + Work
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => addSet(i, "warmup")}
+                        className="rounded-full border border-black/10 px-2.5 py-0.5 text-xs text-ink/70 hover:bg-black/5"
+                      >
+                        + Warm-up
+                      </button>
+                      <button
+                        onClick={() => addSet(i, "working")}
+                        className="rounded-full border border-accent/40 bg-accent/5 px-2.5 py-0.5 text-xs font-medium text-accent hover:bg-accent/10"
+                      >
+                        + Work
+                      </button>
+                      <button
+                        onClick={() => addSet(i, "drop")}
+                        className="rounded-full border border-black/10 px-2.5 py-0.5 text-xs text-ink/70 hover:bg-black/5"
+                      >
+                        + Drop
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                <textarea
+                  placeholder="Notes…"
+                  className="mt-1.5 w-full resize-none rounded-lg border border-black/10 bg-paper px-2.5 py-1.5 text-xs text-ink/70 focus:border-ink focus:outline-none"
+                  rows={1}
+                  value={ex.notes ?? ""}
+                  onChange={(e) => updateExercise(i, { notes: e.target.value })}
                 />
-              ))}
-            </div>
-
-            <div className="mt-1.5 flex flex-wrap gap-1">
-              {ex.muscleGroup === "cardio" ? (
-                <>
-                  <button
-                    onClick={() => addSet(i, "warmup")}
-                    className="rounded-full border border-sky-200 bg-sky-50 px-2.5 py-0.5 text-xs text-sky-700 hover:bg-sky-100"
-                  >
-                    + Warm-up
-                  </button>
-                  <button
-                    onClick={() => addSet(i, "working")}
-                    className="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 hover:bg-blue-100"
-                  >
-                    + Work
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => addSet(i, "warmup")}
-                    className="rounded-full border border-black/10 px-2.5 py-0.5 text-xs text-ink/70 hover:bg-black/5"
-                  >
-                    + Warm-up
-                  </button>
-                  <button
-                    onClick={() => addSet(i, "working")}
-                    className="rounded-full border border-accent/40 bg-accent/5 px-2.5 py-0.5 text-xs font-medium text-accent hover:bg-accent/10"
-                  >
-                    + Work
-                  </button>
-                  <button
-                    onClick={() => addSet(i, "drop")}
-                    className="rounded-full border border-black/10 px-2.5 py-0.5 text-xs text-ink/70 hover:bg-black/5"
-                  >
-                    + Drop
-                  </button>
-                </>
-              )}
-            </div>
-
-            <textarea
-              placeholder="Notes…"
-              className="mt-1.5 w-full resize-none rounded-lg border border-black/10 bg-paper px-2.5 py-1.5 text-xs text-ink/70 focus:border-ink focus:outline-none"
-              rows={1}
-              value={ex.notes ?? ""}
-              onChange={(e) => updateExercise(i, { notes: e.target.value })}
-            />
+              </div>
+            )}
           </div>
         ))}
 
@@ -445,6 +488,18 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
       )}
     </div>
   );
+}
+
+function setsSummary(sets: SetInput[]): string {
+  if (sets.length === 0) return "No sets";
+  return sets
+    .map((s) => {
+      const label = s.kind === "warmup" ? "Warm" : s.kind === "drop" ? "Drop" : "Work";
+      if (s.durationUnit) return `${label} ${s.reps}${s.durationUnit}`;
+      if (s.weight > 0) return `${label} ${s.weight}${s.unit}×${s.reps}`;
+      return `${label} ×${s.reps}`;
+    })
+    .join(" · ");
 }
 
 function Slider({
