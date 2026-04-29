@@ -258,7 +258,7 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
                   </span>
                 </div>
                 {!expanded[i] && (
-                  <p className="mt-0.5 truncate text-[11px] text-ink/45">
+                  <p className="mt-0.5 truncate">
                     {setsSummary(ex.sets)}
                   </p>
                 )}
@@ -490,16 +490,25 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
   );
 }
 
-function setsSummary(sets: SetInput[]): string {
-  if (sets.length === 0) return "No sets";
-  return sets
-    .map((s) => {
-      const label = s.kind === "warmup" ? "Warm" : s.kind === "drop" ? "Drop" : "Work";
-      if (s.durationUnit) return `${label} ${s.reps}${s.durationUnit}`;
-      if (s.weight > 0) return `${label} ${s.weight}${s.unit}×${s.reps}`;
-      return `${label} ×${s.reps}`;
-    })
-    .join(" · ");
+function setsSummary(sets: SetInput[]) {
+  if (sets.length === 0) return <span className="text-[11px] text-ink/30">No sets</span>;
+  return sets.map((s, idx) => {
+    const label = s.kind === "warmup" ? "Warm" : s.kind === "drop" ? "Drop" : "Work";
+    const detail = s.durationUnit
+      ? `${s.reps}${s.durationUnit}`
+      : s.weight > 0
+      ? `${s.weight}${s.unit}×${s.reps}`
+      : `×${s.reps}`;
+    const color = s.durationUnit
+      ? s.kind === "warmup" ? "text-sky-500" : "text-blue-500"
+      : s.kind === "working" ? "text-accent" : s.kind === "drop" ? "text-purple-500" : "text-ink/50";
+    return (
+      <span key={idx} className={`text-[11px] font-medium ${color}`}>
+        {idx > 0 && <span className="mx-1 font-normal text-ink/20">·</span>}
+        {label} <span className="font-normal">{detail}</span>
+      </span>
+    );
+  });
 }
 
 function Slider({
