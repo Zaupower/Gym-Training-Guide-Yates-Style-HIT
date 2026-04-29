@@ -34,6 +34,7 @@ export default async function NewSessionPage({
   const initial: SessionInput = existing
     ? {
         date,
+        title: existing.title,
         energy: existing.energy,
         sleep: existing.sleep,
         stress: existing.stress,
@@ -59,6 +60,7 @@ export default async function NewSessionPage({
       }
     : {
         date,
+        title: "",
         energy: null,
         sleep: null,
         stress: null,

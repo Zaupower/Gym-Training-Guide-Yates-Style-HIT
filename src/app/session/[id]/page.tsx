@@ -34,6 +34,7 @@ export default async function SessionPage({
 
   const initial: SessionInput = {
     date: toDateOnly(session.date),
+    title: session.title,
     energy: session.energy,
     sleep: session.sleep,
     stress: session.stress,

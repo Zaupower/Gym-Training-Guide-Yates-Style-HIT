@@ -38,6 +38,7 @@ export interface ExerciseInput {
 
 export interface SessionInput {
   date: string; // YYYY-MM-DD
+  title?: string;
   energy?: number | null;
   sleep?: number | null;
   stress?: number | null;

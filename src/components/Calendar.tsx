@@ -2,16 +2,21 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useMemo } from "react";
+import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
+import { useMemo, useState } from "react";
+
+interface SessionMeta {
+  id: string;
+  isDraft: boolean;
+  exerciseCount: number;
+  title: string;
+  notes: string;
+}
 
 interface Props {
   year: number;
   month: number; // 0-indexed
-  sessionsByDate: Record<
-    string,
-    { id: string; isDraft: boolean; exerciseCount: number }
-  >;
+  sessionsByDate: Record<string, SessionMeta>;
   experimentDates: string[];
 }
 
@@ -24,6 +29,8 @@ export default function Calendar({
   experimentDates,
 }: Props) {
   const router = useRouter();
+  const [expanded, setExpanded] = useState<string | null>(null);
+
   const todayKey = useMemo(() => {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
@@ -35,16 +42,12 @@ export default function Calendar({
   const mParam = `${year}-${String(month + 1).padStart(2, "0")}`;
   const first = new Date(Date.UTC(year, month, 1));
   const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
-  // Monday-first offset
   const startOffset = (first.getUTCDay() + 6) % 7;
 
   const cells: { key: string; day: number | null }[] = [];
   for (let i = 0; i < startOffset; i++) cells.push({ key: `pad-${i}`, day: null });
   for (let d = 1; d <= daysInMonth; d++) {
-    const key = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(
-      2,
-      "0"
-    )}`;
+    const key = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
     cells.push({ key, day: d });
   }
   while (cells.length % 7 !== 0) cells.push({ key: `pad-end-${cells.length}`, day: null });
@@ -61,6 +64,15 @@ export default function Calendar({
       `/?m=${next.getUTCFullYear()}-${String(next.getUTCMonth() + 1).padStart(2, "0")}`
     );
   }
+
+  // Sessions that have a title or notes, sorted by date
+  const sessionLog = useMemo(
+    () =>
+      Object.entries(sessionsByDate)
+        .filter(([, s]) => s.title || s.notes)
+        .sort(([a], [b]) => a.localeCompare(b)),
+    [sessionsByDate]
+  );
 
   return (
     <div className="rounded-2xl border border-black/10 bg-white p-3 shadow-sm">
@@ -143,6 +155,54 @@ export default function Calendar({
           <span className="h-1.5 w-1.5 rounded-full bg-blue-500" /> experiment
         </span>
       </div>
+
+      {sessionLog.length > 0 && (
+        <div className="mt-4 border-t border-black/10 pt-3">
+          <div className="space-y-1">
+            {sessionLog.map(([date, session]) => {
+              const [y, m, d] = date.split("-").map(Number);
+              const dateLabel = new Date(Date.UTC(y, m - 1, d)).toLocaleDateString(
+                "en-US",
+                { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }
+              );
+              const isOpen = expanded === date;
+              return (
+                <div key={date} className="rounded-xl border border-black/10 overflow-hidden">
+                  <button
+                    onClick={() => setExpanded(isOpen ? null : date)}
+                    className="flex w-full items-center justify-between px-3 py-2 text-left hover:bg-black/[0.03]"
+                  >
+                    <div className="flex items-baseline gap-2 min-w-0">
+                      <span className="shrink-0 text-xs font-medium text-ink/50">
+                        {dateLabel}
+                      </span>
+                      {session.title && (
+                        <span className="truncate text-sm font-semibold text-ink">
+                          {session.title}
+                        </span>
+                      )}
+                    </div>
+                    <ChevronDown
+                      size={14}
+                      className={`ml-2 shrink-0 text-ink/40 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  {isOpen && session.notes && (
+                    <div className="border-t border-black/10 bg-paper px-3 py-2 text-sm text-ink/80 whitespace-pre-wrap">
+                      {session.notes}
+                    </div>
+                  )}
+                  {isOpen && !session.notes && (
+                    <div className="border-t border-black/10 bg-paper px-3 py-2 text-xs text-ink/40 italic">
+                      No comments logged.
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

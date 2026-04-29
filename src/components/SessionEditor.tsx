@@ -39,11 +39,11 @@ const newSet = (kind: SetInput["kind"], unit: Unit): SetInput => ({
   durationUnit: null,
 });
 
-const newCardioSet = (): SetInput => ({
-  kind: "working",
+const newCardioSet = (kind: SetInput["kind"] = "working"): SetInput => ({
+  kind,
   weight: 0,
   unit: "kg",
-  reps: 20,
+  reps: kind === "warmup" ? 90 : 20,
   toFailure: false,
   durationUnit: "min",
 });
@@ -122,7 +122,7 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
       const updated = { ...prev, ...p };
       if (p.muscleGroup !== undefined && p.muscleGroup !== prev.muscleGroup) {
         if (p.muscleGroup === "cardio") {
-          updated.sets = [newCardioSet()];
+          updated.sets = [newCardioSet("working")];
         } else if (prev.muscleGroup === "cardio") {
           updated.sets = [newSet("working", defaultUnit)];
         }
@@ -143,7 +143,7 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
   function addSet(i: number, kind: SetInput["kind"]) {
     setData((d) => {
       const ex = [...d.exercises];
-      const set = ex[i].muscleGroup === "cardio" ? newCardioSet() : newSet(kind, defaultUnit);
+      const set = ex[i].muscleGroup === "cardio" ? newCardioSet(kind) : newSet(kind, defaultUnit);
       ex[i] = { ...ex[i], sets: [...ex[i].sets, set] };
       return { ...d, exercises: ex };
     });
@@ -190,12 +190,19 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
 
       {/* Date + pre-session */}
       <section className="mb-4 rounded-2xl border border-black/10 bg-white p-4">
+        <input
+          type="text"
+          placeholder="Session title (optional)"
+          className="mb-3 w-full bg-transparent text-lg font-semibold placeholder:text-ink/30 focus:outline-none"
+          value={data.title ?? ""}
+          onChange={(e) => patch({ title: e.target.value })}
+        />
         <label className="block text-xs uppercase tracking-wide text-ink/50">
           Date
         </label>
         <input
           type="date"
-          className="w-full bg-transparent text-lg font-semibold focus:outline-none"
+          className="w-full bg-transparent text-base font-medium focus:outline-none"
           value={data.date}
           onChange={(e) => patch({ date: e.target.value })}
         />
@@ -279,12 +286,20 @@ export default function SessionEditor({ initial, existingId, defaultUnit, back }
 
             <div className="mt-2 flex flex-wrap gap-1.5">
               {ex.muscleGroup === "cardio" ? (
-                <button
-                  onClick={() => addSet(i, "working")}
-                  className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
-                >
-                  + Set
-                </button>
+                <>
+                  <button
+                    onClick={() => addSet(i, "warmup")}
+                    className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs text-sky-700 hover:bg-sky-100"
+                  >
+                    + Warm-up
+                  </button>
+                  <button
+                    onClick={() => addSet(i, "working")}
+                    className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
+                  >
+                    + Work
+                  </button>
+                </>
               ) : (
                 <>
                   <button
@@ -478,10 +493,14 @@ function SetRow({
   onRemove: () => void;
 }) {
   if (set.durationUnit) {
+    const isWarmup = set.kind === "warmup";
+    const cardioStyle = isWarmup ? "border-sky-200 bg-sky-50" : "border-blue-200 bg-blue-50";
+    const cardioLabel = isWarmup ? "Warm" : "Work";
+    const cardioLabelColor = isWarmup ? "text-sky-600" : "text-blue-600";
     return (
-      <div className="flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-2 py-1.5">
-        <span className="w-14 shrink-0 text-[10px] font-semibold uppercase tracking-wide text-blue-600">
-          Cardio
+      <div className={`flex items-center gap-1.5 rounded-lg border px-2 py-1.5 ${cardioStyle}`}>
+        <span className={`w-14 shrink-0 text-[10px] font-semibold uppercase tracking-wide ${cardioLabelColor}`}>
+          {cardioLabel}
         </span>
         <input
           type="number"
@@ -502,7 +521,7 @@ function SetRow({
         <button
           onClick={onRemove}
           aria-label="Remove set"
-          className="ml-auto rounded p-1 text-ink/30 hover:bg-black/5 hover:text-blue-500"
+          className="ml-auto rounded p-1 text-ink/30 hover:bg-black/5 hover:text-ink/60"
         >
           <Trash2 size={14} />
         </button>

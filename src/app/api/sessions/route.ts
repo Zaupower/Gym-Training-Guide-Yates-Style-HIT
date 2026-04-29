@@ -67,6 +67,7 @@ export async function POST(req: NextRequest) {
       create: {
         userId: user.id,
         date: dateObj,
+        title: body.title ?? "",
         energy: body.energy ?? null,
         sleep: body.sleep ?? null,
         stress: body.stress ?? null,
@@ -77,6 +78,7 @@ export async function POST(req: NextRequest) {
         isDraft: body.isDraft ?? false,
       },
       update: {
+        title: body.title ?? "",
         energy: body.energy ?? null,
         sleep: body.sleep ?? null,
         stress: body.stress ?? null,

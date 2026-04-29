@@ -41,13 +41,15 @@ export default async function HomePage({
 
   const sessionsByDate: Record<
     string,
-    { id: string; isDraft: boolean; exerciseCount: number }
+    { id: string; isDraft: boolean; exerciseCount: number; title: string; notes: string }
   > = {};
   for (const s of sessions) {
     sessionsByDate[toDateOnly(s.date)] = {
       id: s.id,
       isDraft: s.isDraft,
       exerciseCount: s.exercises.length,
+      title: s.title,
+      notes: s.notes,
     };
   }
   const experimentDates = new Set(experiments.map((e) => toDateOnly(e.date)));

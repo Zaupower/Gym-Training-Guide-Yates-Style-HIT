@@ -124,6 +124,7 @@ model Session {
   overallFeel OverallFeel?
   dietNotes   String       @default("")
   dietTags    String[]     @default([])
+  title       String       @default("")
   notes       String       @default("")
   isDraft     Boolean      @default(false)
   createdAt   DateTime     @default(now())
